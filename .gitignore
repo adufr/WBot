@@ -1,5 +1,10 @@
+# Fichier token
+token.js
+
 # Logs
+logs/
 logs
+log.txt
 *.log
 npm-debug.log*
 yarn-debug.log*
