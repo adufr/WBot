@@ -3,8 +3,9 @@
 // ===========================================================
 
 /**
- * Commande version :
- * affiche la version actuelle du bot
+ * Commande devoirs :
+ * affiche les devoirs à
+ * faire en fonction du serveur
  */
 module.exports.run = async (wbot, message, args) => {
   Promise.all([
@@ -12,7 +13,7 @@ module.exports.run = async (wbot, message, args) => {
   ]).then(function (response) {
     wbot.database.query(`SELECT serveur_channel_name FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
-      message.guild.channels.find(val => val.name === rows[0].serveur_channel_name).send(response[0])
+      message.channel.send(response[0])
     })
   })
 }

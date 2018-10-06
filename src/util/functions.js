@@ -29,14 +29,14 @@ module.exports = (wbot) => {
     return new Promise(function (resolve, reject) {
       wbot.database.query(`SELECT * FROM devoir, serveur WHERE serveur_discord_id = '${message.guild.id}' ORDER BY devoir_date`, function (err, rows, fields) {
         if (err) reject(err)
-        
+
         // Début construction de l'embed
         var embed = new Discord.RichEmbed()
           .setColor(4886754)
           .setTimestamp()
           .setFooter('WBot', wbot.user.avatarURL)
           .setAuthor('WBot', wbot.user.avatarURL)
-        
+
         // Loop dans les devoirs
         var datePassage
         rows.forEach(function (row) {
@@ -46,7 +46,7 @@ module.exports = (wbot) => {
           // Si la date est la même que le champ d'avant : on rajoute au field
           if (datePassage !== undefined && datePassage === date) {
             embed.fields[embed.fields.length - 1].value += '\n**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu
-            
+
             // Sinon, on rajoute un field (bloc)
           } else {
             embed.addField(formatDate(date, weekday) + ' :', '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu)
@@ -56,6 +56,41 @@ module.exports = (wbot) => {
         })
         resolve(embed)
       })
+    })
+  }
+
+
+  /**
+   * Met à jour le channel contenant les devoirs
+   * (supprime le dernier message envoyé par le bot,
+   * puis reposte le message actualisé)
+   */
+  wbot.updateDevoirsChannel = (message) => {
+    // Récupération du channel
+    wbot.database.query(`SELECT serveur_channel_name FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
+      if (err) wbot.logger.log(err, 'error')
+
+      /**
+       * Si le channel n'existe pas
+       */
+      if (message.guild.channels.some(val => val.name === rows[0].serveur_channel_name) === false) {
+        wbot.errors.channelNotFound(wbot, message, rows[0].serveur_channel_name)
+        return
+      }
+
+      /**
+       * Suppression du dernier message du bot
+       */
+      message.guild.channels.find(val => val.name === rows[0].serveur_channel_name).fetchMessages()
+        .then(function (msgs) {
+          msgs.filter(m => m.author.id === wbot.user.id)
+          if (msgs.size) msgs.first().delete()
+          Promise.all([
+            wbot.getEmbedDevoirs(message)
+          ]).then(function (response) {
+            message.guild.channels.find(val => val.name === rows[0].serveur_channel_name).send(response[0])
+          })
+        })
     })
   }
 
@@ -132,7 +167,7 @@ function formatDate (date, weekday) {
       break
     case '03':
       mois = 'Mars'
-      break 
+      break
     case '04':
       mois = 'Avril'
       break
@@ -161,7 +196,7 @@ function formatDate (date, weekday) {
       mois = 'Décembre'
       break
   }
-  
+
   return jour + ' ' + temp[0] + ' ' + mois
 }
 
