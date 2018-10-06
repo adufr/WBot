@@ -46,8 +46,14 @@ module.exports = (wbot) => {
             .setAuthor('WBot', wbot.user.avatarURL)
 
           // Loop dans les devoirs
+
+          // Verifie si la date du devoir est aujourd'hui
+          // Si oui, cela va afficher Aujourd'hui dans l'affichage des devoirs
           var aujourdhui = new Date(Date.now())
           aujourdhui = moment(aujourdhui).format('DD/MM/YY')
+
+          // Verifie si la date du devoir est demain
+          // Si oui, cela va afficher Demain dans l'affichage des devoirs
           var currentDate = new Date()
           var demain = currentDate.setDate(currentDate.getDate() + 1)
           demain = moment(demain).format('DD/MM/YY')
@@ -84,6 +90,7 @@ module.exports = (wbot) => {
    * puis reposte le message actualisé)
    */
   wbot.updateDevoirsChannel = (message) => {
+    wbot.Notifications()
     // Récupération du channel
     wbot.database.query(`SELECT serveur_channel_name FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
@@ -127,8 +134,34 @@ module.exports = (wbot) => {
   process.on('unhandledRejection', err => {
     wbot.logger.log(`Unhandled rejection: ${err}`, 'error')
   })
-}
 
+
+  /**
+  * Système de Notifications
+  */
+  wbot.Notifications = () => {
+    wbot.database.query(`SELECT * FROM devoir, serveur WHERE serveur_discord_id = '498069345713258506' AND devoir_date = CURDATE() + interval 1 day ORDER BY devoir_date`, function (err, rows, fields) {
+      if (err) wbot.logger.log(err, 'error')
+      if (rows[0] === undefined) {
+        return
+      }
+
+      var now = new Date()
+      var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 28, 0, 0) - now
+      if (millisTill10 < 0) {
+        millisTill10 += 86400000 // it's after 10am, try 10am tomorrow.
+      }
+      setTimeout(function () {
+        var messagenotif = '**Rappel pour demain : **'
+        // Loop dans les devoirs
+        rows.forEach(function (row) {
+          messagenotif += '\n' + '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu
+        })
+        wbot.channels.get('498153763706765313').send(messagenotif)
+      }, millisTill10)
+    })
+  }
+}
 
 /**
  * Fonction permettant d'aligner le texte
