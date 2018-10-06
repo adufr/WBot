@@ -65,6 +65,14 @@ exports.roleNotFound = (wbot, message, role) => {
 
 
 /**
+ * Rôle non trouvé
+ */
+exports.channelNotFound = (wbot, message, channel) => {
+  sendErrorEmbed(message, 'Erreur : channel non trouvé', 'Le channel **' + channel + '** n\'a pas été trouvé...')
+}
+
+
+/**
  * Commande max executée
  * (utilisation incorrecte)
  */
