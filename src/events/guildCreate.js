@@ -6,7 +6,7 @@ const moment = require('moment')
 
 
 /**
- * Code appelé lors que l'event "guildeCreate" est triggered :
+ * Code appelé lors que l'event "guildCreate" est triggered :
  * (dès que le bot rejoinds un serveur)
  */
 module.exports = (wbot, guild) => {
