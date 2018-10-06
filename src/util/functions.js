@@ -46,6 +46,11 @@ module.exports = (wbot) => {
             .setAuthor('WBot', wbot.user.avatarURL)
 
           // Loop dans les devoirs
+          var aujourdhui = new Date(Date.now())
+          aujourdhui = moment(aujourdhui).format('DD/MM/YY')
+          var currentDate = new Date()
+          var demain = currentDate.setDate(currentDate.getDate() + 1)
+          demain = moment(demain).format('DD/MM/YY')
           var datePassage
           rows.forEach(function (row) {
             let date = moment(row.devoir_date).format('DD/MM/YY')
@@ -56,6 +61,10 @@ module.exports = (wbot) => {
               embed.fields[embed.fields.length - 1].value += '\n**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu
 
               // Sinon, on rajoute un field (bloc)
+            } else if (date === aujourdhui) {
+              embed.addField('Aujourd\'hui' + ' :', '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu)
+            } else if (date === demain) {
+              embed.addField('Demain' + ' :', '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu)
             } else {
               embed.addField(formatDate(date, weekday) + ' :', '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu)
             }
