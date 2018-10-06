@@ -68,8 +68,8 @@ exports.roleNotFound = (wbot, message, role) => {
  * Commande max executée
  * (utilisation incorrecte)
  */
-exports.errorWrongUsage = (wbot, prefix, command, message) => {
-  sendErrorEmbed(message, 'Erreur : utilisation incorrecte', 'Usage : **' + prefix + command.help.usage + '**')
+exports.errorWrongUsage = (wbot, command, message) => {
+  sendErrorEmbed(message, 'Erreur : utilisation incorrecte', 'Usage : **!' + command.help.usage + '**')
 }
 
 
