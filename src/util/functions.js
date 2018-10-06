@@ -29,32 +29,41 @@ module.exports = (wbot) => {
     return new Promise(function (resolve, reject) {
       wbot.database.query(`SELECT * FROM devoir, serveur WHERE serveur_discord_id = '${message.guild.id}' AND devoir_date >= CURDATE() ORDER BY devoir_date`, function (err, rows, fields) {
         if (err) reject(err)
-
+        if (rows[0] === undefined) {
+          var embedempty = new Discord.RichEmbed()
+            .setColor(4886754)
+            .setTimestamp()
+            .setFooter('WBot', wbot.user.avatarURL)
+            .setAuthor('WBot', wbot.user.avatarURL)
+            .addField('Il n\'y a aucun devoir à venir ...', 'Pour ajouter un devoir, veuillez exécuter la commande `!devoirs_add` ou vous référer à l\'aide avec la commande `!help devoirs_add`.')
+          resolve(embedempty)
+        } else {
         // Début construction de l'embed
-        var embed = new Discord.RichEmbed()
-          .setColor(4886754)
-          .setTimestamp()
-          .setFooter('WBot', wbot.user.avatarURL)
-          .setAuthor('WBot', wbot.user.avatarURL)
+          var embed = new Discord.RichEmbed()
+            .setColor(4886754)
+            .setTimestamp()
+            .setFooter('WBot', wbot.user.avatarURL)
+            .setAuthor('WBot', wbot.user.avatarURL)
 
-        // Loop dans les devoirs
-        var datePassage
-        rows.forEach(function (row) {
-          let date = moment(row.devoir_date).format('DD/MM/YY')
-          let weekday = moment(row.devoir_date).isoWeekday()
+          // Loop dans les devoirs
+          var datePassage
+          rows.forEach(function (row) {
+            let date = moment(row.devoir_date).format('DD/MM/YY')
+            let weekday = moment(row.devoir_date).isoWeekday()
 
-          // Si la date est la même que le champ d'avant : on rajoute au field
-          if (datePassage !== undefined && datePassage === date) {
-            embed.fields[embed.fields.length - 1].value += '\n**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu
+            // Si la date est la même que le champ d'avant : on rajoute au field
+            if (datePassage !== undefined && datePassage === date) {
+              embed.fields[embed.fields.length - 1].value += '\n**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu
 
-            // Sinon, on rajoute un field (bloc)
-          } else {
-            embed.addField(formatDate(date, weekday) + ' :', '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu)
-          }
+              // Sinon, on rajoute un field (bloc)
+            } else {
+              embed.addField(formatDate(date, weekday) + ' :', '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu)
+            }
 
-          datePassage = date
-        })
-        resolve(embed)
+            datePassage = date
+          })
+          resolve(embed)
+        }
       })
     })
   }
