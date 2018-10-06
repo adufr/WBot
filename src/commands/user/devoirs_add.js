@@ -2,7 +2,6 @@
 // == Chargement des modules
 // ===========================================================
 
-const moment = require('moment')
 const Discord = require('discord.js')
 
 
@@ -24,25 +23,26 @@ module.exports.run = async (wbot, message, args) => {
     return
   }
 
-  var matiere = args[0]
-  var dateSaisi = new Date(args[1])
-  let date = moment(dateSaisi).format('YYYY/MM/DD')
+
+  const matiere = args[0]
+  const temp = args[1].split('/')
+  const date = '20' + temp[2] + '-' + temp[1] + '-' + temp[0]
 
   args.shift()
   args.shift()
-  var contenu = args.join(' ')
+  const contenu = args.join(' ')
 
 
   /**
-   * Insértion des nouveaux devoirs
+   * Insertion des nouveaux devoirs
    */
-  wbot.database.query(`INSERT INTO devoir (devoir_matiere, devoir_contenu, devoir_date, serveur_id) VALUES ('${matiere}', '${contenu}', '${date}', (SELECT serveur_id FROM serveur WHERE serveur_discord_id = '${message.guild.id}'))`, function (err, rows, fields) {
+  wbot.database.query(`INSERT INTO devoir (devoir_matiere, devoir_contenu, devoir_date, serveur_id) VALUES ("${matiere}", "${contenu}", '` + date + `', (SELECT serveur_id FROM serveur WHERE serveur_discord_id = '${message.guild.id}'))`, function (err, rows, fields) {
     if (err) wbot.logger.log(err, 'error')
 
     const embed = new Discord.RichEmbed()
       .setColor('#00B200')
       .setTitle('Succès !')
-      .setDescription('Le devoir à bien été ajouté, veuillez saisir `!devoirs` pour afficher la liste des devoirs.')
+      .setDescription('Le devoir a bien été ajouté, veuillez saisir `!devoirs` pour afficher la liste des devoirs.')
       .setFooter(message.author.username, message.author.avatarURL)
       .setTimestamp()
     message.channel.send(embed)
