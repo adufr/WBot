@@ -27,7 +27,7 @@ module.exports = (wbot) => {
    */
   wbot.getEmbedDevoirs = (message) => {
     return new Promise(function (resolve, reject) {
-      wbot.database.query(`SELECT * FROM devoir, serveur WHERE serveur_discord_id = '${message.guild.id}' ORDER BY devoir_date`, function (err, rows, fields) {
+      wbot.database.query(`SELECT * FROM devoir, serveur WHERE serveur_discord_id = '${message.guild.id}' AND devoir_date >= CURDATE() ORDER BY devoir_date`, function (err, rows, fields) {
         if (err) reject(err)
 
         // Début construction de l'embed
