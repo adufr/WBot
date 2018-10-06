@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.2
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  sam. 06 oct. 2018 à 10:27
--- Version du serveur :  10.1.34-MariaDB
--- Version de PHP :  7.2.7
+-- Généré le :  sam. 06 oct. 2018 à 17:29
+-- Version du serveur :  10.1.26-MariaDB
+-- Version de PHP :  7.1.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -36,6 +36,19 @@ CREATE TABLE `devoir` (
   `serveur_id` int(128) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Déchargement des données de la table `devoir`
+--
+
+INSERT INTO `devoir` (`devoir_id`, `devoir_matiere`, `devoir_contenu`, `devoir_date`, `serveur_id`) VALUES
+(1, 'Anglais', 'Faire l\'exercice sur 7Speaking', '2018-11-01', 2),
+(2, 'Linux', 'Faire TP', '2018-10-24', 2),
+(3, 'Français', 'Exo', '2018-11-01', 2),
+(4, 'C#', 'Faire exercice', '2018-11-20', 2),
+(5, 'UML', 'Faire le diagramme de Classe', '2018-10-11', 2),
+(6, 'Réseau', 'Faire le Cisco Packet tracer', '2018-10-11', 2),
+(7, 'PHP (Symfony)', 'Faire l\'installation du framework', '2018-11-20', 2);
+
 -- --------------------------------------------------------
 
 --
@@ -48,7 +61,7 @@ CREATE TABLE `serveur` (
   `serveur_nom` varchar(256) NOT NULL,
   `serveur_prefix` varchar(8) NOT NULL DEFAULT '!',
   `serveur_date_join` datetime NOT NULL,
-  `serveur_channel_id` bigint(128) DEFAULT NULL,
+  `serveur_channel_name` varchar(128) DEFAULT NULL,
   `serveur_role_admin_id` bigint(128) DEFAULT NULL,
   `serveur_role_notif_id` bigint(128) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -57,8 +70,9 @@ CREATE TABLE `serveur` (
 -- Déchargement des données de la table `serveur`
 --
 
-INSERT INTO `serveur` (`serveur_id`, `serveur_discord_id`, `serveur_nom`, `serveur_prefix`, `serveur_date_join`, `serveur_channel_id`, `serveur_role_admin_id`, `serveur_role_notif_id`) VALUES
-(1, 358623719914209301, 'WBot', '!', '2018-10-06 10:26:31', NULL, NULL, NULL);
+INSERT INTO `serveur` (`serveur_id`, `serveur_discord_id`, `serveur_nom`, `serveur_prefix`, `serveur_date_join`, `serveur_channel_name`, `serveur_role_admin_id`, `serveur_role_notif_id`) VALUES
+(1, 358623719914209301, 'WBot', '!', '2018-10-06 10:26:31', 'devoirs', NULL, NULL),
+(2, 498069345713258506, 'BOT', '!', '2018-10-06 12:00:00', 'devoirs', NULL, NULL);
 
 --
 -- Index pour les tables déchargées
@@ -85,13 +99,13 @@ ALTER TABLE `serveur`
 -- AUTO_INCREMENT pour la table `devoir`
 --
 ALTER TABLE `devoir`
-  MODIFY `devoir_id` int(8) NOT NULL AUTO_INCREMENT;
+  MODIFY `devoir_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `serveur`
 --
 ALTER TABLE `serveur`
-  MODIFY `serveur_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `serveur_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Contraintes pour les tables déchargées
