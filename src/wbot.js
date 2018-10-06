@@ -43,8 +43,8 @@ require('./util/functions.js')(wbot) // fonctions utiles
 /**
  * Chargement du logger custom
  */
-wbot.logger = require('./util/Logger')
-wbot.errors = require('./util/Errors.js')
+wbot.logger = require('./util/logger')
+wbot.errors = require('./util/errors.js')
 
 
 /**
