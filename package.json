@@ -19,8 +19,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node wbot.js",
-    "dev": "nodemon wbot.js"
+    "start": "node src/wbot.js",
+    "dev": "nodemon src/wbot.js"
   },
   "repository": {
     "type": "git",
