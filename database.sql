@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  ven. 05 oct. 2018 à 21:42
+-- Généré le :  sam. 06 oct. 2018 à 10:27
 -- Version du serveur :  10.1.34-MariaDB
 -- Version de PHP :  7.2.7
 
@@ -45,7 +45,9 @@ CREATE TABLE `devoir` (
 CREATE TABLE `serveur` (
   `serveur_id` int(8) NOT NULL,
   `serveur_discord_id` bigint(128) NOT NULL,
-  `serveur_prefix` varchar(8) NOT NULL,
+  `serveur_nom` varchar(256) NOT NULL,
+  `serveur_prefix` varchar(8) NOT NULL DEFAULT '!',
+  `serveur_date_join` datetime NOT NULL,
   `serveur_channel_id` bigint(128) DEFAULT NULL,
   `serveur_role_admin_id` bigint(128) DEFAULT NULL,
   `serveur_role_notif_id` bigint(128) DEFAULT NULL
@@ -55,8 +57,8 @@ CREATE TABLE `serveur` (
 -- Déchargement des données de la table `serveur`
 --
 
-INSERT INTO `serveur` (`serveur_id`, `serveur_discord_id`, `serveur_prefix`, `serveur_channel_id`, `serveur_role_admin_id`, `serveur_role_notif_id`) VALUES
-(1, 412630912250019850, '!', 0, 0, 0);
+INSERT INTO `serveur` (`serveur_id`, `serveur_discord_id`, `serveur_nom`, `serveur_prefix`, `serveur_date_join`, `serveur_channel_id`, `serveur_role_admin_id`, `serveur_role_notif_id`) VALUES
+(1, 358623719914209301, 'WBot', '!', '2018-10-06 10:26:31', NULL, NULL, NULL);
 
 --
 -- Index pour les tables déchargées
