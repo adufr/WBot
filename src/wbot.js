@@ -54,7 +54,8 @@ wbot.database = mysql.createConnection({
   host: token.db_host,
   user: token.db_user,
   password: token.db_password,
-  database: token.db_database
+  database: token.db_database,
+  charset: 'utf8mb4'
 })
 
 
