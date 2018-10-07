@@ -12,6 +12,13 @@ if (process.version.slice(1).split('.')[0] < 8) throw new Error('Node 8.0.0 or h
 
 const Discord = require('discord.js')
 const mysql = require('mysql')
+
+const bufferUtil = require('bufferutil')
+const crypto = require('crypto')
+const source = crypto.randomBytes(10)
+const mask = crypto.randomBytes(4)
+bufferUtil.mask(source, mask, source, 0, source.length)
+
 const {
   promisify
 } = require('util')

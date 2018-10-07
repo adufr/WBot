@@ -4,6 +4,7 @@
   "description": "A Discord bot that helps you with homeworks",
   "main": "wbot.js",
   "dependencies": {
+    "bufferutil": "^4.0.0",
     "chalk": "^2.4.1",
     "discord.js": "^11.4.2",
     "moment": "^2.22.2",
