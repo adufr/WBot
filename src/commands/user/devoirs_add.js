@@ -30,7 +30,7 @@ module.exports.run = async (wbot, message, args) => {
 
   args.shift()
   args.shift()
-  const contenu = args.join(' ')
+  const contenu = (args.join(' ')).replace(/"/g, '\\"') // on recréer le string + escape les quotes
 
 
   /**
