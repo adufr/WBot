@@ -1,5 +1,4 @@
 module.exports = {
-  'version': '1.0.00',
   'bot_token': 'YOUR.BOT.TOKEN',
   'db_host': 'YOUR.DATABASE.HOST',
   'db_user': 'YOUR.DATABASE.USER',

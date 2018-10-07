@@ -3,7 +3,7 @@
 // ===========================================================
 
 const Discord = require('discord.js')
-const token = require('../../config/token.js')
+const packageJson = require('../../../package.json')
 
 
 
@@ -18,7 +18,7 @@ const token = require('../../config/token.js')
 module.exports.run = async (wbot, message, args) => {
   const embed = new Discord.RichEmbed()
     .setColor('#3586ff')
-    .setTitle('Version : ' + token.version)
+    .setTitle('Version : ' + packageJson.version)
     .setDescription('Il n\'y a actuellement aucun changelog disponible...')
     .setFooter(message.author.username, message.author.avatarURL)
     .setTimestamp()
