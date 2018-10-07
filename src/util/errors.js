@@ -76,7 +76,8 @@ exports.channelNotFound = (wbot, message, channel) => {
  * Commande max executée
  * (utilisation incorrecte)
  */
-exports.errorWrongUsage = (wbot, command, message) => {
+exports.errorWrongUsage = (wbot, commandName, message) => {
+  const command = wbot.commands.get(commandName)
   sendErrorEmbed(message, 'Erreur : utilisation incorrecte', 'Usage : **!' + command.help.usage + '**')
 }
 
