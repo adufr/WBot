@@ -33,8 +33,11 @@ module.exports.run = async (wbot, message, args) => {
   }
 
 
+  // Récupération de l'id du channel
+  const channelId = (message.guild.channels.find(val => val.name === args[0])).id
+
   // Insértion du nouveau channel
-  wbot.database.query(`UPDATE serveur SET serveur_channel_notif = '${args[0]}' WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
+  wbot.database.query(`UPDATE serveur SET serveur_channel_notif = '${channelId}' WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
     if (err) wbot.logger.log(err, 'error')
 
     const embed = new Discord.RichEmbed()
@@ -62,7 +65,7 @@ module.exports.conf = {
  * Propriétés de la commande
  */
 module.exports.help = {
-  aliases: ['n_channel', 'notif_chan', 'n_chan', 'n_c'],
+  aliases: ['n_channel', 'notif_chan', 'n_chan', 'nc'],
   name: 'notif_channel',
   shortDesc: 'Défini le channel où envoyer les notifications de devoirs',
   longDesc: 'Cette commande permet d\'afficher les notifications des devoirs du lendemain dans le le channel que vous souhaitez.',
