@@ -21,37 +21,24 @@ const fs = require('fs')
 exports.log = (content, type = 'info') => {
   // Variables
   const timestamp = `[${moment().format('DD-MM-YYYY HH:mm:ss')}]`
-  let msg = ''
 
   switch (type) {
     // Log par défaut : affiche une information
     case 'info':
-      msg = timestamp + ' (' + type.toUpperCase() + '...) ' + content + '\n'
-      fs.appendFile('logs/log.txt', msg, 'utf8', (err) => {
-        if (err) throw err
-      })
       return console.log(`${timestamp} (${chalk.bgBlue(type.toUpperCase())}...) ${content}`)
 
 
-      // Log un message succès
+    // Log un message succès
     case 'success':
-      msg = timestamp + ' (' + type.toUpperCase() + ') ' + content + '\n'
-      fs.appendFile('logs/log.txt', msg, 'utf8', (err) => {
-        if (err) throw err
-      })
       return console.log(`${timestamp} (${chalk.black.bgGreen(type.toUpperCase())}) ${content}`)
 
 
-      // Log un message de warning
+    // Log un message de warning
     case 'warn':
-      msg = timestamp + ' (' + type.toUpperCase() + '...) ' + content + '\n'
-      fs.appendFile('logs/log.txt', msg, 'utf8', (err) => {
-        if (err) throw err
-      })
       return console.log(`${timestamp} (${chalk.black.bgYellow(type.toUpperCase())}...) ${content}`)
 
 
-      // Log une erreur 'fatale'
+    // Log une erreur 'fatale'
     case 'error':
       let log = timestamp + ' (' + type.toUpperCase() + '..) ' + content + '\n'
       fs.appendFile('logs/log.txt', log, 'utf8', (err) => {
@@ -60,7 +47,7 @@ exports.log = (content, type = 'info') => {
       return console.log(`${timestamp} (${chalk.bgRed(type.toUpperCase())}..) ${content}`)
 
 
-      // Type non reconnu, envoie d'un message d'erreur
+    // Type non reconnu, envoie d'un message d'erreur
     default:
       throw new TypeError('Le type de logger doit être : success, warn ou error.')
   }
