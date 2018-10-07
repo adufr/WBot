@@ -21,21 +21,23 @@ module.exports.run = async (wbot, message, args) => {
   // Récupération et formatage de l'uptime
   const duration = moment.duration(wbot.uptime).format(' D [jour], H [heure] et m [minute], s [s]')
 
+  var desc = ''
+  desc += '**`' + beautify('Version du bot') + '`** : v' + packageJson.version + '\n'
+  desc += '**`' + beautify('Version discordjs') + '`** : v' + packageJson.dependencies['discord.js'] + '\n'
+  desc += '**`' + beautify('Version nodejs') + '`** : ' + process.version + '\n'
+  desc += '**`' + beautify('Memory usage') + '`** : ' + (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) + ' MB\n'
+  desc += '**`' + beautify('Uptime') + '`** : ' + duration + '\n'
+  desc += '**`' + beautify('Serveurs') + '`** : ' + wbot.guilds.size + '\n'
+  desc += '**`' + beautify('Channels') + '`** : ' + wbot.channels.size + '\n'
+  desc += '**`' + beautify('Utilisateurs') + '`** : ' + wbot.users.size + '\n'
+  // desc += '**`' + beautify('Créateurs') + '`** : Arthur / Woosy#4710 & Alexandre#2086\n'
+
   // Construction de la réponse
   const embed = new Discord.RichEmbed()
     .setColor('#3586ff')
     .setAuthor(wbot.user.username, wbot.user.avatarURL)
     .setTitle('Informations :')
-    .setDescription('Liste d\'informations concernant le bot.')
-    .addField('Version du bot', 'v' + packageJson.version, true)
-    .addField('Version discord.js', 'v' + packageJson.dependencies['discord.js'], true)
-    .addField('Version nodejs', process.version, true)
-    .addField('Uptime', duration, true)
-    .addField('Mem usage', (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) + ' MB', true)
-    .addField('Créateur', 'Arthur / Woosy#4710', true)
-    .addField('Serveurs', wbot.guilds.size, true)
-    .addField('Channels', wbot.channels.size, true)
-    .addField('Utilisateurs', wbot.users.size, true)
+    .setDescription(desc)
     .setFooter(message.author.username, message.author.avatarURL)
     .setTimestamp()
 
@@ -64,4 +66,18 @@ module.exports.help = {
   longDesc: 'La commande stats vous permet d\'obtenir des informations (principalement techniques) sur le bot. Vous pouvez ainsi surveiller le fait qu\'il soit à jour, ou bien avoir une idée du nombre de personnes qui l\'utilisent...',
   usage: 'stats',
   example: 'stats'
+}
+
+
+
+/**
+ * Fonction permettant d'aligner le texte
+ */
+function beautify (s) {
+  if (s.length < 20) {
+    for (let i = 0; i < 20; i++) {
+      if (s.length < 20) s += '.'
+    }
+  }
+  return s
 }
