@@ -38,7 +38,7 @@ module.exports = (wbot) => {
           var embedempty = new Discord.RichEmbed()
             .setColor(4886754)
             .setTimestamp()
-            .setFooter('WBot', wbot.user.avatarURL)
+            .setFooter(message.author.username, message.author.avatarURL)
             .setAuthor('WBot', wbot.user.avatarURL)
             .addField('Il n\'y a aucun devoir à venir ...', 'Pour ajouter un devoir, veuillez exécuter la commande `!devoirs_add` ou vous référer à l\'aide avec la commande `!help devoirs_add`.')
           resolve(embedempty)
@@ -47,7 +47,7 @@ module.exports = (wbot) => {
           var embed = new Discord.RichEmbed()
             .setColor(4886754)
             .setTimestamp()
-            .setFooter('WBot', wbot.user.avatarURL)
+            .setFooter(message.author.username, message.author.avatarURL)
             .setAuthor('WBot', wbot.user.avatarURL)
 
           // Loop dans les devoirs
@@ -170,8 +170,16 @@ module.exports = (wbot) => {
         rows.forEach(function (row) {
           messageNotif += '\n' + '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu
         })
-        // wbot.guilds.get(serveurId).channels.get(val => val.name === channelName).send(messageNotif)
-        wbot.channels.get(channelName).send(messageNotif)
+
+        // Création et envoie de l'embed
+        const embed = new Discord.RichEmbed()
+          .setColor(4886754)
+          .setTimestamp()
+          .setFooter('WBot', wbot.user.avatarURL)
+          .setAuthor('WBot', wbot.user.avatarURL)
+          .setTitle('Devoirs pour demain :')
+          .setDescription(messageNotif)
+        wbot.channels.get(channelName).send(embed)
       }, millisTill10)
     })
   }
