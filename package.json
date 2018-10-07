@@ -8,6 +8,7 @@
     "chalk": "^2.4.1",
     "discord.js": "^11.4.2",
     "moment": "^2.22.2",
+    "moment-duration-format": "^2.2.2",
     "mysql": "^2.16.0"
   },
   "devDependencies": {
