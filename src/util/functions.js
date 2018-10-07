@@ -7,6 +7,10 @@ const moment = require('moment')
 
 
 
+// ===========================================================
+// == Fonction
+// ===========================================================
+
 module.exports = (wbot) => {
   /**
    * Renvoie un string contenant tout les aliases de la commande :
@@ -18,6 +22,7 @@ module.exports = (wbot) => {
     })
     return string.substr(2)
   }
+
 
 
   /**
@@ -84,13 +89,15 @@ module.exports = (wbot) => {
   }
 
 
+
   /**
    * Met à jour le channel contenant les devoirs
    * (supprime le dernier message envoyé par le bot,
    * puis reposte le message actualisé)
    */
   wbot.updateDevoirsChannel = (message) => {
-    wbot.Notifications()
+    // Update des notifications
+    wbot.notifyAllServers()
     // Récupération du channel
     wbot.database.query(`SELECT serveur_channel_name FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
@@ -120,6 +127,57 @@ module.exports = (wbot) => {
   }
 
 
+
+  /**
+   * Appel pour lancer les notifications
+   */
+  wbot.notifyAllServers = () => {
+    wbot.database.query(`SELECT serveur_discord_id, serveur_channel_notif, serveur_id FROM serveur`, function (err, rows, fields) {
+      if (err) wbot.logger.log(err, 'error')
+      if (rows[0] === undefined) {
+        return
+      }
+      rows.forEach(function (row) {
+        wbot.notify(row.serveur_id, row.serveur_channel_notif)
+      })
+    })
+  }
+
+
+
+  /**
+  * Système de notifications
+  */
+  wbot.notify = (serveurId, channelName) => {
+    // Récupération des devoirs pour le lendemain
+    wbot.database.query(`SELECT DISTINCT devoir_matiere, devoir_contenu, devoir_date FROM devoir, serveur WHERE devoir.serveur_id = '${serveurId}' AND devoir_date = CURDATE() + interval 1 day ORDER BY devoir_date`, function (err, rows, fields) {
+      if (err) wbot.logger.log(err, 'error')
+      // Si il n'y en n'a pas : return
+      if (rows === undefined || rows.length === 0) {
+        return
+      }
+
+      // Calcul du temps à attendre avant de lancer les notifications
+      const now = new Date()
+      var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 14, 50, 0, 0) - now
+      if (millisTill10 < 0) {
+        millisTill10 += 86400000 // it's after 10am, try 10am tomorrow.
+      }
+      // Lancement notification
+      setTimeout(function () {
+        var messageNotif = '**Rappel pour demain : **'
+        // Pour chaque devoir : on formate le message
+        rows.forEach(function (row) {
+          messageNotif += '\n' + '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu
+        })
+        // wbot.guilds.get(serveurId).channels.get(val => val.name === channelName).send(messageNotif)
+        wbot.channels.get(channelName).send(messageNotif)
+      }, millisTill10)
+    })
+  }
+
+
+
   /**
    * Ces deux méthodes vont catch les exceptions et 'donner plus de détails' sur les
    * erreurs et leurs stack trace (bien qu'elles laisseront le code planter au
@@ -134,34 +192,14 @@ module.exports = (wbot) => {
   process.on('unhandledRejection', err => {
     wbot.logger.log(`Unhandled rejection: ${err}`, 'error')
   })
-
-
-  /**
-  * Système de Notifications
-  */
-  wbot.Notifications = () => {
-    wbot.database.query(`SELECT * FROM devoir, serveur WHERE serveur_discord_id = '498069345713258506' AND devoir_date = CURDATE() + interval 1 day ORDER BY devoir_date`, function (err, rows, fields) {
-      if (err) wbot.logger.log(err, 'error')
-      if (rows[0] === undefined) {
-        return
-      }
-
-      var now = new Date()
-      var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 28, 0, 0) - now
-      if (millisTill10 < 0) {
-        millisTill10 += 86400000 // it's after 10am, try 10am tomorrow.
-      }
-      setTimeout(function () {
-        var messagenotif = '**Rappel pour demain : **'
-        // Loop dans les devoirs
-        rows.forEach(function (row) {
-          messagenotif += '\n' + '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu
-        })
-        wbot.channels.get('498153763706765313').send(messagenotif)
-      }, millisTill10)
-    })
-  }
 }
+
+
+
+// ===========================================================
+// == Autres petites fonctions
+// == (uniquement accessible dans ce fichier)
+// ===========================================================
 
 /**
  * Fonction permettant d'aligner le texte
