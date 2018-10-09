@@ -17,7 +17,7 @@ module.exports = (wbot, message) => {
     if (err) wbot.logger.log(err, 'error')
 
     // Prefix
-    const prefix = rows[0].serveur_prefix
+    const prefix = rows[0].serveur_prefix || '!'
 
 
     // (Au cas où l'on oublie le prefix)
