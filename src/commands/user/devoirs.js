@@ -11,7 +11,7 @@ module.exports.run = async (wbot, message, args) => {
   Promise.all([
     wbot.getEmbedDevoirsByMessage(message)
   ]).then(function (response) {
-    wbot.database.query(`SELECT serveur_channel_name FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
+    wbot.database.query(`SELECT serveur_channel_devoirs FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
       message.channel.send(response[0])
     })

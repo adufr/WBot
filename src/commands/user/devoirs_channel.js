@@ -34,7 +34,7 @@ module.exports.run = async (wbot, message, args) => {
 
 
   // Insértion du nouveau channel
-  wbot.database.query(`UPDATE serveur SET serveur_channel_name = '${args[0]}' WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
+  wbot.database.query(`UPDATE serveur SET serveur_channel_devoirs = '${args[0]}' WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
     if (err) wbot.logger.log(err, 'error')
 
     const embed = new Discord.RichEmbed()
