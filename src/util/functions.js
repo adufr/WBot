@@ -32,7 +32,7 @@ module.exports = (wbot) => {
    */
   wbot.getEmbedDevoirs = (message) => {
     return new Promise(function (resolve, reject) {
-      wbot.database.query(`SELECT * FROM devoir, serveur WHERE serveur.serveur_discord_id = '${message.guild.id}' AND devoir_date >= CURDATE() ORDER BY devoir_date`, function (err, rows, fields) {
+      wbot.database.query(`SELECT DISTINCT devoir_matiere, devoir_date, devoir_contenu FROM devoir, serveur WHERE devoir.serveur_discord_id = '${message.guild.id}' AND devoir_date >= CURDATE() ORDER BY devoir_date`, function (err, rows, fields) {
         if (err) reject(err)
         if (rows[0] === undefined) {
           var embedempty = new Discord.RichEmbed()
