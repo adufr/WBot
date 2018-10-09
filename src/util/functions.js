@@ -97,7 +97,11 @@ module.exports = (wbot) => {
    */
   wbot.updateDevoirsChannel = (message) => {
     // Update des notifications
-    wbot.notifyAllServers()
+    // wbot.notifyAllServers()
+    wbot.database.query(`SELECT serveur_channel_notif FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
+      if (err) wbot.logger.log(err, 'error')
+      wbot.notify(message.guild.id, rows[0].serveur_channel_notif)
+    })
     // Récupération du channel
     wbot.database.query(`SELECT serveur_channel_name FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
@@ -129,7 +133,7 @@ module.exports = (wbot) => {
 
 
   /**
-   * Appel pour lancer les notifications
+   * Appel pour lancer les notifications sur tout les serveurs
    */
   wbot.notifyAllServers = () => {
     wbot.database.query(`SELECT serveur_discord_id, serveur_channel_notif FROM serveur`, function (err, rows, fields) {
@@ -159,7 +163,7 @@ module.exports = (wbot) => {
 
       // Calcul du temps à attendre avant de lancer les notifications
       const now = new Date()
-      var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 13, 41, 0, 0) - now
+      var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 14, 21, 0, 0) - now
       if (millisTill10 < 0) {
         millisTill10 += 86400000 // it's after 10am, try 10am tomorrow.
       }
