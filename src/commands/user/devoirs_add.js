@@ -36,7 +36,7 @@ module.exports.run = async (wbot, message, args) => {
   /**
    * Insertion des nouveaux devoirs
    */
-  wbot.database.query(`INSERT INTO devoir (devoir_matiere, devoir_contenu, devoir_date, serveur_id) VALUES ("${matiere}", "${contenu}", '` + date + `', (SELECT serveur_id FROM serveur WHERE serveur_discord_id = '${message.guild.id}'))`, function (err, rows, fields) {
+  wbot.database.query(`INSERT INTO devoir (devoir_matiere, devoir_contenu, devoir_date, serveur_discord_id) VALUES ("${matiere}", "${contenu}", '` + date + `', "${message.guild.id}")`, function (err, rows, fields) {
     if (err) wbot.logger.log(err, 'error')
 
     const embed = new Discord.RichEmbed()

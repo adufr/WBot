@@ -32,7 +32,7 @@ module.exports = (wbot) => {
    */
   wbot.getEmbedDevoirs = (message) => {
     return new Promise(function (resolve, reject) {
-      wbot.database.query(`SELECT * FROM devoir, serveur WHERE serveur_discord_id = '${message.guild.id}' AND devoir_date >= CURDATE() ORDER BY devoir_date`, function (err, rows, fields) {
+      wbot.database.query(`SELECT * FROM devoir, serveur WHERE serveur.serveur_discord_id = '${message.guild.id}' AND devoir_date >= CURDATE() ORDER BY devoir_date`, function (err, rows, fields) {
         if (err) reject(err)
         if (rows[0] === undefined) {
           var embedempty = new Discord.RichEmbed()
@@ -132,13 +132,13 @@ module.exports = (wbot) => {
    * Appel pour lancer les notifications
    */
   wbot.notifyAllServers = () => {
-    wbot.database.query(`SELECT serveur_discord_id, serveur_channel_notif, serveur_id FROM serveur`, function (err, rows, fields) {
+    wbot.database.query(`SELECT serveur_discord_id, serveur_channel_notif FROM serveur`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
       if (rows[0] === undefined) {
         return
       }
       rows.forEach(function (row) {
-        wbot.notify(row.serveur_id, row.serveur_channel_notif)
+        wbot.notify(row.serveur_discord_id, row.serveur_channel_notif)
       })
     })
   }
@@ -150,7 +150,7 @@ module.exports = (wbot) => {
   */
   wbot.notify = (serveurId, channelName) => {
     // Récupération des devoirs pour le lendemain
-    wbot.database.query(`SELECT DISTINCT devoir_matiere, devoir_contenu, devoir_date FROM devoir, serveur WHERE devoir.serveur_id = '${serveurId}' AND devoir_date = CURDATE() + interval 1 day ORDER BY devoir_date`, function (err, rows, fields) {
+    wbot.database.query(`SELECT DISTINCT devoir_matiere, devoir_contenu, devoir_date FROM devoir, serveur WHERE devoir.serveur_discord_id = '${serveurId}' AND devoir_date = CURDATE() + interval 1 day ORDER BY devoir_date`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
       // Si il n'y en n'a pas : return
       if (rows === undefined || rows.length === 0) {
@@ -159,7 +159,7 @@ module.exports = (wbot) => {
 
       // Calcul du temps à attendre avant de lancer les notifications
       const now = new Date()
-      var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 14, 50, 0, 0) - now
+      var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 13, 41, 0, 0) - now
       if (millisTill10 < 0) {
         millisTill10 += 86400000 // it's after 10am, try 10am tomorrow.
       }
