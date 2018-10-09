@@ -11,4 +11,7 @@ module.exports = async wbot => {
   wbot.user.setActivity('Tapez !help', {
     type: 'WATCHING'
   })
+
+  // Lancement des mises à jour des devoirs & notifications
+  wbot.dailyUpdate()
 }

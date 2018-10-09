@@ -9,7 +9,7 @@
  */
 module.exports.run = async (wbot, message, args) => {
   Promise.all([
-    wbot.getEmbedDevoirs(message)
+    wbot.getEmbedDevoirsByMessage(message)
   ]).then(function (response) {
     wbot.database.query(`SELECT serveur_channel_name FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
