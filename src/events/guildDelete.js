@@ -3,7 +3,7 @@
  * (dès que le bot rejoinds un serveur)
  */
 module.exports = (wbot, guild) => {
-  wbot.database.query(`SELECT serveur_id FROM serveur WHERE serveur_discord_id = '${guild.id}'`, function (err, rows, fields) {
+  wbot.database.query(`SELECT serveur_discord_id FROM serveur WHERE serveur_discord_id = '${guild.id}'`, function (err, rows, fields) {
     if (err) wbot.logger.log(err, 'error')
 
     /**

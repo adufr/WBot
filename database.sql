@@ -46,7 +46,7 @@ CREATE TABLE `devoir` (
 CREATE TABLE `serveur` (
   `serveur_discord_id` varchar(128) NOT NULL,
   `serveur_nom` varchar(128) NOT NULL,
-  `serveur_prefix` varchar(8) NOT NULL,
+  `serveur_prefix` varchar(8) NOT NULL DEFAULT '!',
   `serveur_date_join` datetime NOT NULL,
   `serveur_channel_name` varchar(128) DEFAULT NULL,
   `serveur_role_admin_id` bigint(20) DEFAULT NULL,
