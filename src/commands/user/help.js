@@ -4,6 +4,7 @@
 
 const Discord = require('discord.js')
 const fs = require('fs')
+const conf = require('../../config/conf.js')
 
 
 
@@ -138,9 +139,19 @@ function beautify (s) {
  * Fonction async retournant une promesse avec la liste de toutes
  * les commandes et leur short-desc
  */
-function loadCommands (wbot, path, prefix) {
+function loadCommands (wbot, commandsPath, prefix) {
   return new Promise(function (resolve, reject) {
-    fs.readdir('./src/' + path, (err, files) => {
+    /**
+     * Vérification du chemin à utiliser pour charger
+     * les événements et les commandes...
+     */
+    var path = conf.path_to_src
+    if (process.argv[2] !== undefined && process.argv[2] === 'dev') {
+      path = './src/'
+    }
+
+    // Chargement des commande
+    fs.readdir(path + commandsPath, (err, files) => {
       if (err) reject(err)
       let jsFile = files.filter(f => f.split('.').pop() === 'js')
       if (jsFile.length <= 0) resolve('Aucune commande...')

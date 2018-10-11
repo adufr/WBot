@@ -44,6 +44,7 @@ wbot.commands = new Discord.Collection()
  * Chargement de divers fichiers
  */
 const token = require('./config/token.js') // token bot & bdd
+const conf = require('./config/conf.js') // autres paramètres de configuration
 require('./util/functions.js')(wbot) // fonctions utiles
 
 
@@ -65,6 +66,15 @@ wbot.database = mysql.createConnection({
   charset: 'utf8mb4'
 })
 
+
+/**
+ * Vérification du chemin à utiliser pour charger
+ * les événements et les commandes...
+ */
+var path = conf.path_to_src
+if (process.argv[2] !== undefined && process.argv[2] === 'dev') {
+  path = './src/'
+}
 
 
 // ===========================================================
@@ -98,7 +108,8 @@ const init = async () => {
 
 
   // Chargement des évenements  :
-  const eventFiles = await readdir('./src/events/')
+  var eventFiles = await readdir(path + 'events/')
+
   wbot.logger.log('================================================================', 'info')
   wbot.logger.log(`Chargement d'un total de ${eventFiles.length} événements :`, 'info')
 
@@ -147,12 +158,12 @@ init()
  * Fonction permettant le chargement des commandes
  * (loop à travers les dossiers)
  */
-function loadCommands (path) {
-  fs.readdir('./src/' + path, (err, files) => { // boucle sur tout les fichiers du dossier
+function loadCommands (commandsPath) {
+  fs.readdir(path + commandsPath, (err, files) => { // boucle sur tout les fichiers du dossier
     if (err) wbot.logger.log(err, 'error')
 
     let jsFile = files.filter(f => f.split('.').pop() === 'js') // Nombre de fichiers .js
-    wbot.logger.log(path.substring(2) + ':', 'info') // affiche dans quel dossier on est entrain de charger la cmd
+    wbot.logger.log(commandsPath.substring(2) + ':', 'info') // affiche dans quel dossier on est entrain de charger la cmd
 
     // Si on ne trouve pas de commandes
     if (jsFile.length <= 0) {
@@ -165,7 +176,7 @@ function loadCommands (path) {
 
     // Pour chaque commande
     jsFile.forEach((f, i) => {
-      let props = require(`./` + `${path}${f}`)
+      let props = require(`./` + `${commandsPath}${f}`)
       wbot.logger.log(`  -- commande ${f} chargée`, 'success')
       wbot.commands.set(props.help.name, props)
 

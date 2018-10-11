@@ -1,0 +1,3 @@
+module.exports = {
+  'path_to_src': '/your/absolute/path/to/WBot/src'
+}
