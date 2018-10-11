@@ -41,22 +41,21 @@ module.exports = (wbot) => {
 
       wbot.database.query(`SELECT DISTINCT devoir_matiere, devoir_date, devoir_contenu FROM devoir, serveur WHERE devoir.serveur_discord_id = '${discordId}' AND devoir_date >= CURDATE() ORDER BY devoir_date`, function (err, rows, fields) {
         if (err) reject(err)
-        if (rows[0] === undefined) {
-          var embedempty = new Discord.RichEmbed()
-            .setColor(4886754)
-            .setTimestamp()
-            .setAuthor('WBot', wbot.user.avatarURL)
-            .addField('Il n\'y a aucun devoir à venir ...', 'Pour ajouter un devoir, veuillez exécuter la commande `!devoirs_add` ou vous référer à l\'aide avec la commande `!help devoirs_add`.')
-          resolve(embedempty)
-        } else {
+
         // Début construction de l'embed
-          var embed = new Discord.RichEmbed()
-            .setColor(4886754)
-            .setTimestamp()
-            .setAuthor('WBot', wbot.user.avatarURL)
+        var embed = new Discord.RichEmbed()
+          .setColor(4886754)
+          .setTimestamp()
+          .setAuthor('WBot', wbot.user.avatarURL)
+          .setFooter('Dernière mise-à-jour', wbot.user.avatarURL)
 
-          // Loop dans les devoirs
+        // PAS DE DEVOIRS :
+        if (rows[0] === undefined) {
+          embed.addField('Il n\'y a aucun devoir à venir ...', 'Pour ajouter un devoir, veuillez exécuter la commande `!devoirs_add` ou vous référer à l\'aide avec la commande `!help devoirs_add`.')
+          resolve(embed)
 
+          // LISTE DES DEVOIRS :
+        } else {
           // Verifie si la date du devoir est aujourd'hui
           // Si oui, cela va afficher Aujourd'hui dans l'affichage des devoirs
           var aujourdhui = new Date(Date.now())
@@ -238,7 +237,7 @@ module.exports = (wbot) => {
     const now = new Date()
     var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 1, 0, 0) - now
     if (millisTill10 < 0) {
-      millisTill10 += 86400000 // it's after 10am, try 10am tomorrow.
+      millisTill10 += 8.64e7 // 86400000
     }
     // Lancement notification
     setTimeout(function () {
@@ -263,7 +262,6 @@ module.exports = (wbot) => {
    * Envoi d'un message signalant le succès d'une commande
    */
   wbot.sendSuccess = (message, msg) => { // msg => la variable contenant le message de retoru
-
     const embed = new Discord.RichEmbed()
       .setColor('#00B200')
       .setDescription(msg)
