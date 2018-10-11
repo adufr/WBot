@@ -1,5 +1,6 @@
 # WBot
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d51355f9284b4c7da809a167e36dbd87)](https://app.codacy.com/app/WBot/WBot?utm_source=github.com&utm_medium=referral&utm_content=Woosy/WBot&utm_campaign=Badge_Grade_Dashboard)
 [![Apache 2.0 Licence](https://img.shields.io/hexpm/l/plug.svg)](https://tldrlegal.com/license/apache-license-2.0-(apache-2.0))
 [![WBot's version](https://img.shields.io/badge/version-0.0.01-brightgreen.svg)](https://discord.gg/ff4f52s)
 ![GitHub issues](https://img.shields.io/github/issues-raw/woosy/WBot.svg)
