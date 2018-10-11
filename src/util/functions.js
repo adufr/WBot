@@ -30,72 +30,16 @@ module.exports = (wbot) => {
    * des devoris en fonction du serveur sur lequel
    * la demande a été effectuée
    */
-  wbot.getEmbedDevoirsByDiscordId = (discordId) => {
+  wbot.getEmbedDevoirs = (type, value) => {
     return new Promise(function (resolve, reject) {
+      /**
+       * Id du discord permettant de récupérer
+       * les devoirs
+       */
+      var discordId = value
+      if (type === 'message') discordId = value.guild.id
+
       wbot.database.query(`SELECT DISTINCT devoir_matiere, devoir_date, devoir_contenu FROM devoir, serveur WHERE devoir.serveur_discord_id = '${discordId}' AND devoir_date >= CURDATE() ORDER BY devoir_date`, function (err, rows, fields) {
-        if (err) reject(err)
-        if (rows[0] === undefined) {
-          var embedempty = new Discord.RichEmbed()
-            .setColor(4886754)
-            .setTimestamp()
-            .setAuthor('WBot', wbot.user.avatarURL)
-            .addField('Il n\'y a aucun devoir à venir ...', 'Pour ajouter un devoir, veuillez exécuter la commande `!devoirs_add` ou vous référer à l\'aide avec la commande `!help devoirs_add`.')
-          resolve(embedempty)
-        } else {
-        // Début construction de l'embed
-          var embed = new Discord.RichEmbed()
-            .setColor(4886754)
-            .setTimestamp()
-            .setAuthor('WBot', wbot.user.avatarURL)
-
-          // Loop dans les devoirs
-
-          // Verifie si la date du devoir est aujourd'hui
-          // Si oui, cela va afficher Aujourd'hui dans l'affichage des devoirs
-          var aujourdhui = new Date(Date.now())
-          aujourdhui = moment(aujourdhui).format('DD/MM/YY')
-
-          // Verifie si la date du devoir est demain
-          // Si oui, cela va afficher Demain dans l'affichage des devoirs
-          var currentDate = new Date()
-          var demain = currentDate.setDate(currentDate.getDate() + 1)
-          demain = moment(demain).format('DD/MM/YY')
-          var datePassage
-          rows.forEach(function (row) {
-            let date = moment(row.devoir_date).format('DD/MM/YY')
-            let weekday = moment(row.devoir_date).isoWeekday()
-
-            // Si la date est la même que le champ d'avant : on rajoute au field
-            if (datePassage !== undefined && datePassage === date) {
-              embed.fields[embed.fields.length - 1].value += '\n**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu
-
-              // Sinon, on rajoute un field (bloc)
-            } else if (date === aujourdhui) {
-              embed.addField('Aujourd\'hui' + ' :', '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu)
-            } else if (date === demain) {
-              embed.addField('Demain' + ' :', '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu)
-            } else {
-              embed.addField(formatDate(date, weekday) + ' :', '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu)
-            }
-
-            datePassage = date
-          })
-          resolve(embed)
-        }
-      })
-    })
-  }
-
-
-
-  /**
-   * Fonction qui retourne l'embed avec la liste
-   * des devoris en fonction du serveur sur lequel
-   * la demande a été effectuée
-   */
-  wbot.getEmbedDevoirsByMessage = (message) => {
-    return new Promise(function (resolve, reject) {
-      wbot.database.query(`SELECT DISTINCT devoir_matiere, devoir_date, devoir_contenu FROM devoir, serveur WHERE devoir.serveur_discord_id = '${message.guild.id}' AND devoir_date >= CURDATE() ORDER BY devoir_date`, function (err, rows, fields) {
         if (err) reject(err)
         if (rows[0] === undefined) {
           var embedempty = new Discord.RichEmbed()
@@ -182,7 +126,7 @@ module.exports = (wbot) => {
           msgs.filter(m => m.author.id === wbot.user.id)
           if (msgs.size) msgs.first().delete()
           Promise.all([
-            wbot.getEmbedDevoirsByMessage(message)
+            wbot.getEmbedDevoirs('message', message)
           ]).then(function (response) {
             message.guild.channels.find(val => val.name === rows[0].serveur_channel_devoirs).send(response[0])
           })
@@ -192,13 +136,17 @@ module.exports = (wbot) => {
 
 
 
+  /**
+   * Mise à jour quotidienne du channel
+   * contenant le message de devoirs
+   */
   wbot.updateDevoirsChannelDaily = (discordId) => {
     // Update des notifications
     wbot.database.query(`SELECT serveur_channel_notif FROM serveur WHERE serveur_discord_id = '${discordId}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
       wbot.notify(discordId, rows[0].serveur_channel_notif)
     })
-    // Récupération du channel
+    // Update du message de devoirs
     wbot.database.query(`SELECT serveur_channel_devoirs FROM serveur WHERE serveur_discord_id = '${discordId}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
 
@@ -207,16 +155,16 @@ module.exports = (wbot) => {
        */
       if (wbot.guilds.get(discordId).channels.some(val => val.name === rows[0].serveur_channel_devoirs) === false) return
 
-
       /**
        * Suppression du dernier message du bot
+       * Puis envoie du nouveau message mis-à-jour
        */
       wbot.guilds.get(discordId).channels.find(val => val.name === rows[0].serveur_channel_devoirs).fetchMessages()
         .then(function (msgs) {
           msgs.filter(m => m.author.id === wbot.user.id)
           if (msgs.size) msgs.first().delete()
           Promise.all([
-            wbot.getEmbedDevoirsByDiscordId(discordId)
+            wbot.getEmbedDevoirs('discordId', discordId)
           ]).then(function (response) {
             wbot.guilds.get(discordId).channels.find(val => val.name === rows[0].serveur_channel_devoirs).send(response[0])
           })
@@ -225,15 +173,14 @@ module.exports = (wbot) => {
   }
 
 
+
   /**
    * Appel pour lancer les notifications sur tout les serveurs
    */
   wbot.notifyAllServers = () => {
     wbot.database.query(`SELECT serveur_discord_id, serveur_channel_notif FROM serveur`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
-      if (rows[0] === undefined) {
-        return
-      }
+      if (rows[0] === undefined) return
       rows.forEach(function (row) {
         wbot.notify(row.serveur_discord_id, row.serveur_channel_notif)
       })
@@ -243,8 +190,8 @@ module.exports = (wbot) => {
 
 
   /**
-  * Système de notifications
-  */
+   * Système de notifications
+   */
   wbot.notify = (serveurId, channelName) => {
     // Récupération des devoirs pour le lendemain
     wbot.database.query(`SELECT DISTINCT devoir_matiere, devoir_contenu, devoir_date FROM devoir, serveur WHERE devoir.serveur_discord_id = '${serveurId}' AND devoir_date = CURDATE() + interval 1 day ORDER BY devoir_date`, function (err, rows, fields) {
@@ -281,6 +228,11 @@ module.exports = (wbot) => {
     })
   }
 
+
+
+  /**
+   * Compte à rebour pour lancer les notifications
+   */
   wbot.dailyUpdate = () => {
     // Calcul du temps à attendre avant de lancer les notifications
     const now = new Date()
@@ -304,6 +256,25 @@ module.exports = (wbot) => {
       wbot.dailyUpdate()
     }, millisTill10)
   }
+
+
+
+  /**
+   * Envoi d'un message signalant le succès d'une commande
+   */
+  wbot.sendSuccess = (message, msg) => { // msg => la variable contenant le message de retoru
+
+    const embed = new Discord.RichEmbed()
+      .setColor('#00B200')
+      .setDescription(msg)
+      .setAuthor('Succès !', wbot.user.avatarURL)
+      .setFooter(message.author.username, message.author.avatarURL)
+      .setTimestamp()
+
+    message.channel.send(embed)
+  }
+
+
 
   /**
    * Ces deux méthodes vont catch les exceptions et 'donner plus de détails' sur les

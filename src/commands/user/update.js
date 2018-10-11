@@ -8,9 +8,12 @@
  */
 module.exports.run = async (wbot, message, args) => {
   /**
-     * Update du channel de devoirs
-     */
+   * Update du channel de devoirs
+   */
   wbot.updateDevoirsChannel(message)
+
+  // Message de succès
+  wbot.sendSuccess(message, 'Les devoirs ont bien été mis à jours !')
 }
 
 

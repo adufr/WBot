@@ -1,12 +1,4 @@
 // ===========================================================
-// == Chargement des modules
-// ===========================================================
-
-const Discord = require('discord.js')
-
-
-
-// ===========================================================
 // == Execution de la commande
 // ===========================================================
 
@@ -39,14 +31,8 @@ module.exports.run = async (wbot, message, args) => {
   wbot.database.query(`INSERT INTO devoir (devoir_matiere, devoir_contenu, devoir_date, serveur_discord_id) VALUES ("${matiere}", "${contenu}", '` + date + `', "${message.guild.id}")`, function (err, rows, fields) {
     if (err) wbot.logger.log(err, 'error')
 
-    const embed = new Discord.RichEmbed()
-      .setColor('#00B200')
-      .setTitle('Succès !')
-      .setDescription('Le devoir a bien été ajouté, veuillez saisir `!devoirs` pour afficher la liste des devoirs.')
-      .setFooter(message.author.username, message.author.avatarURL)
-      .setTimestamp()
-    message.channel.send(embed)
-
+    // Message de succès
+    wbot.sendSucces(message, 'Le devoir a bien été ajouté, veuillez saisir `!devoirs` pour afficher la liste des devoirs.')
 
     /**
      * Update du channel de devoirs

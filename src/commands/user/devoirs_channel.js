@@ -1,12 +1,4 @@
 // ===========================================================
-// == Chargement des modules
-// ===========================================================
-
-const Discord = require('discord.js')
-
-
-
-// ===========================================================
 // == Execution de la commande
 // ===========================================================
 
@@ -37,13 +29,8 @@ module.exports.run = async (wbot, message, args) => {
   wbot.database.query(`UPDATE serveur SET serveur_channel_devoirs = '${args[0]}' WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
     if (err) wbot.logger.log(err, 'error')
 
-    const embed = new Discord.RichEmbed()
-      .setColor('#00B200')
-      .setTitle('Succès !')
-      .setDescription('Les devoirs s\'afficheront désormais dans le channel : **' + args[0] + '**')
-      .setFooter(message.author.username, message.author.avatarURL)
-      .setTimestamp()
-    message.channel.send(embed)
+    // Message de succès
+    wbot.sendSuccess(message, 'Les devoirs s\'afficheront désormais dans le channel : **' + args[0] + '**')
   })
 }
 
