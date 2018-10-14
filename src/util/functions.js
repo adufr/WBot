@@ -202,9 +202,9 @@ module.exports = (wbot) => {
 
       // Calcul du temps à attendre avant de lancer les notifications
       const now = new Date()
-      var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 14, 21, 0, 0) - now
+      var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 30, 0, 0) - now
       if (millisTill10 < 0) {
-        millisTill10 += 86400000 // it's after 10am, try 10am tomorrow.
+        millisTill10 += 8.64e7 // 86400000 = 24h
       }
       // Lancement notification
       setTimeout(function () {
@@ -235,9 +235,9 @@ module.exports = (wbot) => {
   wbot.dailyUpdate = () => {
     // Calcul du temps à attendre avant de lancer les notifications
     const now = new Date()
-    var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 1, 0, 0) - now
+    var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 10, 0, 0) - now
     if (millisTill10 < 0) {
-      millisTill10 += 8.64e7 // 86400000
+      millisTill10 += 8.64e7 // 86400000 = 24h
     }
     // Lancement notification
     setTimeout(function () {
