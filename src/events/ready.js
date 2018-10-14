@@ -8,7 +8,7 @@ module.exports = async wbot => {
   wbot.logger.log(`WBot est sur ${wbot.guilds.size} serveurs (${wbot.users.size} utilisateurs)`, 'success')
 
   // Set message d'activité :
-  wbot.user.setActivity('Tapez !help', {
+  wbot.user.setActivity(`!help - ${wbot.guilds.size} serveurs`, {
     type: 'WATCHING'
   })
 
