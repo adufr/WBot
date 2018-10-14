@@ -62,11 +62,20 @@ module.exports = (wbot, message) => {
     * Permission admin
     */
     if (commandFile.conf.permission === 10) {
+      // Execution de la commande par un super-admin
+      if (message.author !== message.guild.owner.client && message.author.id !== 255065617705467912 && message.author.id !== 365155625099067393) {
+        // Exécution de la commande
+        commandFile.run(wbot, message, args)
+        // Log l'utilisation de la commande
+        wbot.logger.log(message.author.tag + ' a executé la commande : ' + cmd + ' (' + message.guild.name + ')', 'info')
+      }
+
+      // Execution par un "admin" du serveur
       // On récupère l'id du role admin
       wbot.database.query(`SELECT serveur_role_admin_id FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
         if (err) wbot.logger.log(err, 'error')
 
-        if (message.member.roles.find('id', rows[0].serveur_role_admin_id) || message.author === message.guild.owner.client || message.author.id === 255065617705467912 || message.author.id === 365155625099067393) {
+        if (message.member.roles.find('id', rows[0].serveur_role_admin_id)) {
           // Exécution de la commande
           commandFile.run(wbot, message, args)
           // Log l'utilisation de la commande
@@ -77,22 +86,7 @@ module.exports = (wbot, message) => {
       })
     } else
 
-
-    /**
-    * Permission owner du serveur
-    */
-    if (commandFile.conf.permission === 100) {
-      if (message.author.id === message.guild.owner.id || message.author.id === 255065617705467912 || message.author.id === 365155625099067393) {
-        // Exécution de la commande
-        commandFile.run(wbot, message, args)
-        // Log l'utilisation de la commande
-        wbot.logger.log(message.author.tag + ' a executé la commande : ' + cmd + ' (' + message.guild.name + ')', 'info')
-      } else {
-        wbot.errors.noPerm(wbot, message)
-      }
-    } else
-
-
+    
     /**
      * Permission owner du bot
      */
