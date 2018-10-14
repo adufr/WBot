@@ -24,6 +24,7 @@ const {
 } = require('util')
 const fs = require('fs')
 const readdir = promisify(require('fs').readdir)
+const path = require('path')
 
 
 
@@ -44,7 +45,6 @@ wbot.commands = new Discord.Collection()
  * Chargement de divers fichiers
  */
 const token = require('./config/token.js') // token bot & bdd
-const conf = require('./config/conf.js') // autres paramètres de configuration
 require('./util/functions.js')(wbot) // fonctions utiles
 
 
@@ -66,15 +66,6 @@ wbot.database = mysql.createConnection({
   charset: 'utf8mb4'
 })
 
-
-/**
- * Vérification du chemin à utiliser pour charger
- * les événements et les commandes...
- */
-var path = conf.path_to_src
-if (process.argv[2] !== undefined && process.argv[2] === 'dev') {
-  path = './src/'
-}
 
 
 // ===========================================================
@@ -102,13 +93,13 @@ const init = async () => {
   // Chargement des commandes :
   wbot.logger.log('================================================================', 'info')
   wbot.logger.log('Début du chargement des commandes...', 'info')
-  loadCommands('commands/user/')
-  loadCommands('commands/admin/')
+  loadCommands(path.join(__dirname, '/commands/user/'))
+  loadCommands(path.join(__dirname, '/commands/admin/'))
 
 
 
   // Chargement des évenements  :
-  var eventFiles = await readdir(path + 'events/')
+  var eventFiles = await readdir(path.join(__dirname, '/events/'))
 
   wbot.logger.log('================================================================', 'info')
   wbot.logger.log(`Chargement d'un total de ${eventFiles.length} événements :`, 'info')
@@ -159,11 +150,11 @@ init()
  * (loop à travers les dossiers)
  */
 function loadCommands (commandsPath) {
-  fs.readdir(path + commandsPath, (err, files) => { // boucle sur tout les fichiers du dossier
+  fs.readdir(commandsPath, (err, files) => { // boucle sur tout les fichiers du dossier
     if (err) wbot.logger.log(err, 'error')
 
     let jsFile = files.filter(f => f.split('.').pop() === 'js') // Nombre de fichiers .js
-    wbot.logger.log(commandsPath + ':', 'info') // affiche dans quel dossier on est entrain de charger la cmd
+    wbot.logger.log(commandsPath.slice(-15) + ':', 'info') // affiche dans quel dossier on est entrain de charger la cmd
 
     // Si on ne trouve pas de commandes
     if (jsFile.length <= 0) {
@@ -176,7 +167,7 @@ function loadCommands (commandsPath) {
 
     // Pour chaque commande
     jsFile.forEach((f, i) => {
-      let props = require(`./` + `${commandsPath}${f}`)
+      let props = require(`${commandsPath}${f}`)
       wbot.logger.log(`  -- commande ${f} chargée`, 'success')
       wbot.commands.set(props.help.name, props)
 
