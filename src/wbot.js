@@ -25,6 +25,7 @@ const {
 const fs = require('fs')
 const readdir = promisify(require('fs').readdir)
 const path = require('path')
+const packageJson = require('../package.json')
 
 
 
@@ -76,7 +77,7 @@ const init = async () => {
   // Début du chargement :
   wbot.logger.log('================================================================', 'info')
   wbot.logger.log('Début du chargement...', 'info')
-  wbot.logger.log('Version ' + token.version, 'info')
+  wbot.logger.log('Version ' + packageJson.version, 'info')
   wbot.logger.log('================================================================', 'info')
 
 
