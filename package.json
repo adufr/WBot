@@ -22,7 +22,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node wbot.js",
-    "dev": "node src/wbot.js dev"
+    "dev": "node src/wbot.js dev",
+    "update": "sudo git pull | pm2 restart wbot | pm2 monit wbot"
   },
   "repository": {
     "type": "git",
