@@ -90,6 +90,21 @@ module.exports = (wbot, message) => {
       } else {
         wbot.errors.noPerm(wbot, message)
       }
+    } else
+
+
+    /**
+     * Permission owner du bot
+     */
+    if (commandFile.conf.permission === 1000) {
+      if (message.author.id === 255065617705467912 || message.author.id === 365155625099067393) {
+        // Exécution de la commande
+        commandFile.run(wbot, message, args)
+        // Log l'utilisation de la commande
+        wbot.logger.log(message.author.tag + ' a executé la commande : ' + cmd + ' (' + message.guild.name + ')', 'info')
+      } else {
+        wbot.errors.noPerm(wbot, message)
+      }
     }
   })
 }

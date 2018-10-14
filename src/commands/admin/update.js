@@ -22,7 +22,7 @@ module.exports.run = async (wbot, message, args) => {
  * Niveau de permission
  */
 module.exports.conf = {
-  permission: 0
+  permission: 10
 }
 
 

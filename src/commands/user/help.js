@@ -3,8 +3,8 @@
 // ===========================================================
 
 const Discord = require('discord.js')
+const path = require('path')
 const fs = require('fs')
-const conf = require('../../config/conf.js')
 
 
 
@@ -24,31 +24,23 @@ module.exports.run = async (wbot, message, args) => {
    * 0 arg - affiche la liste des commandes en fonction du niveau de permission
    */
   if (args.length === 0) {
-    // Récupère le préfixe du serveur
-    wbot.database.query(`SELECT serveur_prefix FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
-      if (err) wbot.logger.log(err, 'error')
-      const prefix = rows[0].prefix
+    // Promesse pour récupérer tout les commandes AVANT d'envoyer l'embed :
+    Promise.all([
+      loadCommands(wbot, __dirname),
+      loadCommands(wbot, path.join(__dirname, '/../admin'))
 
-      // Promesse pour récupérer tout les commandes AVANT d'envoyer l'embed :
-      Promise.all([
-        loadCommands(wbot, 'commands/user/', prefix)
-        // loadCommands(wbot, '../commands/admin/', prefix),
-        // loadCommands(wbot, '../commands/botowner/', prefix)
-
-      ]).then(function (responses) {
-        const embed = new Discord.RichEmbed()
-          .setColor('#3586ff')
-          .setTitle('Liste des commandes :')
-          .setDescription('Voici la liste des commandes du bot, classées par groupe de permissions')
-          .addField('Commandes utilisateurs :', responses[0])
-          // .addField('Commandes administrateurs :', responses[1])
-          // .addField('Commandes créateur du bot :', responses[2])
-          .setFooter(message.author.username, message.author.avatarURL)
-          .setTimestamp()
-        message.channel.send(embed)
-      }).catch(function (errors) {
-        wbot.logger.log(errors, 'error')
-      })
+    ]).then(function (responses) {
+      const embed = new Discord.RichEmbed()
+        .setColor('#3586ff')
+        .setTitle('Liste des commandes :')
+        .setDescription('Voici la liste des commandes du bot, classées par groupe de permissions')
+        .addField('Commandes utilisateurs :', responses[0])
+        .addField('Commandes administrateurs :', responses[1])
+        .setFooter(message.author.username, message.author.avatarURL)
+        .setTimestamp()
+      message.channel.send(embed)
+    }).catch(function (errors) {
+      wbot.logger.log(errors, 'error')
     })
   } else
 
@@ -139,26 +131,22 @@ function beautify (s) {
  * Fonction async retournant une promesse avec la liste de toutes
  * les commandes et leur short-desc
  */
-function loadCommands (wbot, commandsPath, prefix) {
-  return new Promise(function (resolve, reject) {
-    /**
-     * Vérification du chemin à utiliser pour charger
-     * les événements et les commandes...
-     */
-    var path = conf.path_to_src
-    if (process.argv[2] !== undefined && process.argv[2] === 'dev') {
-      path = './src/'
-    }
 
-    // Chargement des commande
-    fs.readdir(path + commandsPath, (err, files) => {
+function loadCommands (wbot, commandsPath) {
+  return new Promise(function (resolve, reject) {
+    fs.readdir(commandsPath, (err, files) => { // boucle sur tout les fichiers du dossier
       if (err) reject(err)
-      let jsFile = files.filter(f => f.split('.').pop() === 'js')
+
+      let jsFile = files.filter(f => f.split('.').pop() === 'js') // Nombre de fichiers .js
+
+      // Si on ne trouve pas de commandes
       if (jsFile.length <= 0) resolve('Aucune commande...')
+
       let description = ''
+      // Pour chaque commande
       jsFile.forEach((f, i) => {
-        const props = require(`./${f}`)
-        description = description + '`!' + beautify(props.help.name) + '` - ' + props.help.shortDesc + '\n'
+        const props = require(`${commandsPath}\\${f}`)
+        description += '`!' + beautify(props.help.name) + '` - ' + props.help.shortDesc + '\n'
       })
       resolve(description)
     })

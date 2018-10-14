@@ -103,7 +103,7 @@ const init = async () => {
   wbot.logger.log('================================================================', 'info')
   wbot.logger.log('Début du chargement des commandes...', 'info')
   loadCommands('commands/user/')
-  // loadCommands('./commands/admin/')
+  loadCommands('commands/admin/')
 
 
 
@@ -163,7 +163,7 @@ function loadCommands (commandsPath) {
     if (err) wbot.logger.log(err, 'error')
 
     let jsFile = files.filter(f => f.split('.').pop() === 'js') // Nombre de fichiers .js
-    wbot.logger.log(commandsPath.substring(2) + ':', 'info') // affiche dans quel dossier on est entrain de charger la cmd
+    wbot.logger.log(commandsPath + ':', 'info') // affiche dans quel dossier on est entrain de charger la cmd
 
     // Si on ne trouve pas de commandes
     if (jsFile.length <= 0) {
