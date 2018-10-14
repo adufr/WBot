@@ -145,7 +145,7 @@ function loadCommands (wbot, commandsPath) {
       let description = ''
       // Pour chaque commande
       jsFile.forEach((f, i) => {
-        const props = require(`${commandsPath}\\${f}`)
+        const props = require(`${commandsPath}/${f}`)
         description += '`!' + beautify(props.help.name) + '` - ' + props.help.shortDesc + '\n'
       })
       resolve(description)
