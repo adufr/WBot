@@ -233,6 +233,7 @@ module.exports = (wbot) => {
    * Compte à rebour pour lancer les notifications
    */
   wbot.dailyUpdate = () => {
+    wbot.notifyAllServers()
     // Calcul du temps à attendre avant de lancer les notifications
     const now = new Date()
     var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 10, 0, 0) - now
