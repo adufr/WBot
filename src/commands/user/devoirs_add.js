@@ -32,7 +32,7 @@ module.exports.run = async (wbot, message, args) => {
     if (err) wbot.logger.log(err, 'error')
 
     // Message de succès
-    wbot.sendSucces(message, 'Le devoir a bien été ajouté, veuillez saisir `!devoirs` pour afficher la liste des devoirs.')
+    wbot.sendSuccess(message, 'Le devoir a bien été ajouté, veuillez saisir `!devoirs` pour afficher la liste des devoirs.')
 
     /**
      * Update du channel de devoirs
