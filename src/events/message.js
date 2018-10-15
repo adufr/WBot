@@ -63,7 +63,7 @@ module.exports = (wbot, message) => {
     */
     if (commandFile.conf.permission === 10) {
       // Execution de la commande par un super-admin
-      if (message.author.id === message.guild.owner.client.id || message.author.id === 255065617705467912 || message.author.id === 365155625099067393) {
+      if (message.author === message.guild.owner.client || message.author.id === '255065617705467912' || message.author.id === '365155625099067393') {
         // Exécution de la commande
         commandFile.run(wbot, message, args)
         // Log l'utilisation de la commande
