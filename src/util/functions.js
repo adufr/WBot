@@ -177,7 +177,7 @@ module.exports = (wbot) => {
    * Appel pour lancer les notifications sur tout les serveurs
    */
   wbot.notifyAllServers = () => {
-    wbot.database.query(`SELECT serveur_discord_id, serveur_channel_notif FROM serveur`, function (err, rows, fields) {
+    wbot.database.query(`SELECT DISTINCT serveur_discord_id, serveur_channel_notif FROM serveur`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
       console.log('Notifying all servers')
       if (rows[0] === undefined) return
