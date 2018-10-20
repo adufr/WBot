@@ -25,6 +25,7 @@ module.exports.run = async (wbot, message, args) => {
   desc += '**`' + beautify('Version du bot') + '`** : v' + packageJson.version + '\n'
   desc += '**`' + beautify('Version discordjs') + '`** : v' + packageJson.dependencies['discord.js'] + '\n'
   desc += '**`' + beautify('Version nodejs') + '`** : ' + process.version + '\n'
+  desc += '**`' + beautify('Github') + '`** : https://github.com/Woosy/WBot'
   desc += '**`' + beautify('Memory usage') + '`** : ' + (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) + ' MB\n'
   desc += '**`' + beautify('Uptime') + '`** : ' + duration + '\n'
   desc += '**`' + beautify('Serveurs') + '`** : ' + wbot.guilds.size + '\n'
@@ -60,12 +61,12 @@ module.exports.conf = {
  * Propriétés de la commande
  */
 module.exports.help = {
-  aliases: ['info', 'bot'],
-  name: 'stats',
+  aliases: ['stats', 'bot', 'src'],
+  name: 'info',
   shortDesc: 'Affiche diverses informations du bot',
-  longDesc: 'La commande stats vous permet d\'obtenir des informations (principalement techniques) sur le bot. Vous pouvez ainsi surveiller le fait qu\'il soit à jour, ou bien avoir une idée du nombre de personnes qui l\'utilisent...',
-  usage: 'stats',
-  example: 'stats'
+  longDesc: 'La commande info vous permet d\'obtenir des informations (principalement techniques) sur le bot. Vous pouvez ainsi surveiller le fait qu\'il soit à jour, ou bien avoir une idée du nombre de personnes qui l\'utilisent...',
+  usage: 'info',
+  example: 'info'
 }
 
 
