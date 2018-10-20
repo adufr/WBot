@@ -25,7 +25,7 @@ module.exports.run = async (wbot, message, args) => {
   desc += '**`' + beautify('Version du bot') + '`** : v' + packageJson.version + '\n'
   desc += '**`' + beautify('Version discordjs') + '`** : v' + packageJson.dependencies['discord.js'] + '\n'
   desc += '**`' + beautify('Version nodejs') + '`** : ' + process.version + '\n'
-  desc += '**`' + beautify('Github') + '`** : https://github.com/Woosy/WBot'
+  desc += '**`' + beautify('Github') + '`** : https://github.com/Woosy/WBot \n'
   desc += '**`' + beautify('Memory usage') + '`** : ' + (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) + ' MB\n'
   desc += '**`' + beautify('Uptime') + '`** : ' + duration + '\n'
   desc += '**`' + beautify('Serveurs') + '`** : ' + wbot.guilds.size + '\n'
