@@ -34,5 +34,13 @@ module.exports = (wbot, guild) => {
         wbot.logger.log(`WBot a de nouveau rejoint ${guild.name} (${guild.id}). Créateur => ${guild.owner.user.tag}`, 'info')
       })
     }
+
+    /**
+     * Mise à jour du "message d'activité"
+     * (nombre de serveurs)
+     */
+    wbot.user.setActivity(`!help - ${wbot.guilds.size} serveurs`, {
+      type: 'WATCHING'
+    })
   })
 }
