@@ -49,7 +49,7 @@ CREATE TABLE `serveur` (
   `serveur_prefix` varchar(8) NOT NULL DEFAULT '!',
   `serveur_date_join` datetime NOT NULL,
   `serveur_channel_devoirs` varchar(128) DEFAULT NULL,
-  `serveur_role_admin_id` bigint(20) DEFAULT NULL,
+  `serveur_role_admin` varchar(64) DEFAULT NULL,
   `serveur_role_notif_id` bigint(20) DEFAULT NULL,
   `serveur_channel_notif` varchar(128) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

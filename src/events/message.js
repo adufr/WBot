@@ -73,10 +73,10 @@ module.exports = (wbot, message) => {
 
       // Execution par un "admin" du serveur
       // On récupère l'id du role admin
-      wbot.database.query(`SELECT serveur_role_admin_id FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
+      wbot.database.query(`SELECT serveur_role_admin FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
         if (err) wbot.logger.log(err, 'error')
 
-        if (message.member.roles.find('id', rows[0].serveur_role_admin_id)) {
+        if (message.member.roles.find(val => val.name === rows[0].serveur_role_admin)) {
           // Exécution de la commande
           commandFile.run(wbot, message, args)
           // Log l'utilisation de la commande
