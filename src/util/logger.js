@@ -20,22 +20,22 @@ const fs = require('fs')
  */
 exports.log = (content, type = 'info') => {
   // Variables
-  const timestamp = `[${moment().format('DD-MM-YYYY HH:mm:ss')}]`
+  const timestamp = `[${moment().format('DD/MM/YYYY HH:mm:ss')}]`
 
   switch (type) {
     // Log par défaut : affiche une information
     case 'info':
-      return console.log(`${timestamp} (${chalk.bgBlue(type.toUpperCase())}...) ${content}`)
+      return console.log(`${timestamp}(${chalk.bgBlue(type.toUpperCase())}...)${content}`)
 
 
     // Log un message succès
     case 'success':
-      return console.log(`${timestamp} (${chalk.black.bgGreen(type.toUpperCase())}) ${content}`)
+      return console.log(`${timestamp}(${chalk.black.bgGreen(type.toUpperCase())})${content}`)
 
 
     // Log un message de warning
     case 'warn':
-      return console.log(`${timestamp} (${chalk.black.bgYellow(type.toUpperCase())}...) ${content}`)
+      return console.log(`${timestamp}(${chalk.black.bgYellow(type.toUpperCase())}...)${content}`)
 
 
     // Log une erreur 'fatale'
@@ -44,7 +44,7 @@ exports.log = (content, type = 'info') => {
       fs.appendFile('logs/log.txt', log, 'utf8', (err) => {
         if (err) throw err
       })
-      return console.log(`${timestamp} (${chalk.bgRed(type.toUpperCase())}..) ${content}`)
+      return console.log(`${timestamp}(${chalk.bgRed(type.toUpperCase())}..)${content}`)
 
 
     // Type non reconnu, envoie d'un message d'erreur

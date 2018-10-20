@@ -13,7 +13,7 @@ module.exports = (wbot, guild) => {
     if (rows.length <= 0) {
       wbot.database.query(`INSERT INTO serveur (serveur_discord_id, serveur_nom, serveur_date_join) VALUES ('${guild.id}', '${guild.name}', '0000-00-00 00:00:00')`, function (err, rows, fields) {
         if (err) wbot.logger.log(err, 'error')
-        wbot.logger.log(`WBot a quitté ${guild.name} (sans y avoit été enregistré avant) (${guild.id}). Son créateur est ${guild.owner.user.tag}`, 'info')
+        wbot.logger.log(`[${guild.name}] (${guild.owner.user.tag}) WBot LEFT the server. ID is: ${guild.id} (/!\\ Wasn't registerd)`, 'info')
       })
     /**
      * Si le bot a déjà rejoins le serveur
@@ -22,7 +22,7 @@ module.exports = (wbot, guild) => {
     } else {
       wbot.database.query(`UPDATE serveur SET serveur_date_join = '0000-00-00 00:00:00' WHERE serveur_discord_id = '${guild.id}'`, function (err, rows, fields) {
         if (err) wbot.logger.log(err, 'error')
-        wbot.logger.log(`WBot a quitté ${guild.name} (${guild.id}). Créateur => ${guild.owner.user.tag}`, 'info')
+        wbot.logger.log(`[${guild.name}] (${guild.owner.user.tag}) WBot LEFT the server. ID is: ${guild.id}`, 'info')
       })
     }
 

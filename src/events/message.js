@@ -54,7 +54,7 @@ module.exports = (wbot, message) => {
       // Exécution de la commande
       commandFile.run(wbot, message, args)
       // Log l'utilisation de la commande
-      wbot.logger.log(message.author.tag + ' a executé la commande : ' + cmd + ' (' + message.guild.name + ')', 'info')
+      wbot.logger.log(`[${message.guild.name}] (${message.author.tag}) COMMAND: ${cmd}`, 'info')
     } else
 
 
@@ -67,7 +67,7 @@ module.exports = (wbot, message) => {
         // Exécution de la commande
         commandFile.run(wbot, message, args)
         // Log l'utilisation de la commande
-        wbot.logger.log(message.author.tag + ' a executé la commande : ' + cmd + ' (' + message.guild.name + ')', 'info')
+        wbot.logger.log(`[${message.guild.name}] (${message.author.tag}) COMMAND: ${cmd}`, 'info')
         return
       }
 
@@ -80,7 +80,7 @@ module.exports = (wbot, message) => {
           // Exécution de la commande
           commandFile.run(wbot, message, args)
           // Log l'utilisation de la commande
-          wbot.logger.log(message.author.tag + ' a executé la commande : ' + cmd + ' (' + message.guild.name + ')', 'info')
+          wbot.logger.log(`[${message.guild.name}] (${message.author.tag}) COMMAND: ${cmd}`, 'info')
         } else {
           wbot.errors.noPerm(wbot, message)
         }
@@ -96,7 +96,7 @@ module.exports = (wbot, message) => {
         // Exécution de la commande
         commandFile.run(wbot, message, args)
         // Log l'utilisation de la commande
-        wbot.logger.log(message.author.tag + ' a executé la commande : ' + cmd + ' (' + message.guild.name + ')', 'info')
+        wbot.logger.log(`[${message.guild.name}] (${message.author.tag}) COMMAND: ${cmd}`, 'info')
       } else {
         wbot.errors.noPerm(wbot, message)
       }

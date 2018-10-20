@@ -4,8 +4,8 @@
  */
 module.exports = async wbot => {
   // Log le fait que le bot s'est connecté avec succès + quelques stats
-  wbot.logger.log(`${wbot.user.tag} a démarré avec succès !`, 'success')
-  wbot.logger.log(`WBot est sur ${wbot.guilds.size} serveurs (${wbot.users.size} utilisateurs)`, 'success')
+  wbot.logger.log(`==> ${wbot.user.tag} is up and running!`, 'success')
+  wbot.logger.log(`==> ${wbot.user.tag} is on ${wbot.guilds.size} guilds, serving ${wbot.users.size} users!`, 'success')
 
   // Set message d'activité :
   wbot.user.setActivity(`!help - ${wbot.guilds.size} serveurs`, {

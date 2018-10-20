@@ -21,7 +21,7 @@ module.exports = (wbot, guild) => {
       let date = moment().format('YYYY-MM-DD HH:mm:ss')
       wbot.database.query(`INSERT INTO serveur (serveur_discord_id, serveur_nom, serveur_date_join) VALUES ('${guild.id}', '${guild.name}', '${date}')`, function (err, rows, fields) {
         if (err) wbot.logger.log(err, 'error')
-        wbot.logger.log(`WBot a rejoint ${guild.name} (${guild.id}). Son créateur est ${guild.owner.user.tag}`, 'info')
+        wbot.logger.log(`[${guild.name}] (${guild.owner.user.tag}) WBot JOINED the server. ID is: ${guild.id}`, 'info')
       })
     /**
      * Si le bot a déjà rejoins le serveur
@@ -31,7 +31,7 @@ module.exports = (wbot, guild) => {
       let date = moment().format('YYYY-MM-DD HH:mm:ss')
       wbot.database.query(`UPDATE serveur SET serveur_date_join = '${date}' WHERE serveur_discord_id = '${guild.id}'`, function (err, rows, fields) {
         if (err) wbot.logger.log(err, 'error')
-        wbot.logger.log(`WBot a de nouveau rejoint ${guild.name} (${guild.id}). Créateur => ${guild.owner.user.tag}`, 'info')
+        wbot.logger.log(`[${guild.name}] (${guild.owner.user.tag}) WBot RE-JOINED the server. ID is: ${guild.id}`, 'info')
       })
     }
 
