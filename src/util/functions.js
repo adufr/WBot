@@ -179,8 +179,9 @@ module.exports = (wbot) => {
   wbot.notifyAllServers = () => {
     wbot.database.query(`SELECT DISTINCT serveur_discord_id, serveur_channel_notif FROM serveur`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
-      console.log('Notifying all servers')
       if (rows[0] === undefined) return
+
+      // Envoie notification
       rows.forEach(function (row) {
         wbot.notify(row.serveur_discord_id, row.serveur_channel_notif)
       })
@@ -197,17 +198,14 @@ module.exports = (wbot) => {
     wbot.database.query(`SELECT DISTINCT devoir_matiere, devoir_contenu, devoir_date FROM devoir, serveur WHERE devoir.serveur_discord_id = '${serveurId}' AND devoir_date = CURDATE() + interval 1 day ORDER BY devoir_date`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
       // Si il n'y en n'a pas : return
-      if (rows === undefined || rows.length === 0) {
-        return
-      }
+      if (rows === undefined || rows.length === 0) return
 
       // Calcul du temps à attendre avant de lancer les notifications
       const now = new Date()
       var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 30, 0, 0) - now
-      if (millisTill10 < 0) {
-        millisTill10 += 8.64e7 // 86400000 = 24h
-      }
-      // Lancement notification
+      if (millisTill10 < 0) millisTill10 += 8.64e7 // 86400000 = 24h
+
+      // Lancement compte-à-rebours notification
       setTimeout(function () {
         var messageNotif = '**Rappel pour demain : **'
         // Pour chaque devoir : on formate le message
@@ -234,20 +232,18 @@ module.exports = (wbot) => {
    * Compte à rebour pour lancer les notifications
    */
   wbot.dailyUpdate = () => {
-    wbot.notifyAllServers()
     // Calcul du temps à attendre avant de lancer les notifications
     const now = new Date()
     var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 10, 0, 0) - now
-    if (millisTill10 < 0) {
-      millisTill10 += 8.64e7 // 86400000 = 24h
-    }
-    // Lancement notification
+    if (millisTill10 < 0) millisTill10 += 8.64e7 // 86400000 = 24h
+
+    // Lancement compte-à-rebours avant update devoirs / notifications
     setTimeout(function () {
       wbot.database.query(`SELECT serveur_discord_id, serveur_channel_notif FROM serveur`, function (err, rows, fields) {
         if (err) wbot.logger.log(err, 'error')
-        if (rows[0] === undefined) {
-          return
-        }
+        if (rows[0] === undefined) return
+
+        // Update de chaque serveur
         rows.forEach(function (row) {
           wbot.updateDevoirsChannelDaily(row.serveur_discord_id)
         })
