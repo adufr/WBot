@@ -234,7 +234,7 @@ module.exports = (wbot) => {
   wbot.dailyUpdate = () => {
     // Calcul du temps à attendre avant de lancer les notifications
     const now = new Date()
-    var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 10, 0, 0) - now
+    var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 3, 0, 0, 0) - now
     if (millisTill10 < 0) millisTill10 += 8.64e7 // 86400000 = 24h
 
     // Lancement compte-à-rebours avant update devoirs / notifications
