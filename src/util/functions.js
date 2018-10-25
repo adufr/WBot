@@ -207,7 +207,7 @@ module.exports = (wbot) => {
 
       // Lancement compte-à-rebours notification
       setTimeout(function () {
-        var messageNotif = '**Rappel pour demain : **'
+        var messageNotif = '**Rappel pour demain @notif_devoirs : **'
         // Pour chaque devoir : on formate le message
         rows.forEach(function (row) {
           messageNotif += '\n' + '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu
@@ -298,7 +298,7 @@ module.exports = (wbot) => {
 /**
  * Fonction permettant d'aligner le texte
  */
-function beautify (s) {
+function beautify(s) {
   if (s.length < 14) {
     for (let i = 0; i < 14; i++) {
       if (s.length < 14) s += '.'
@@ -311,7 +311,7 @@ function beautify (s) {
 /**
  * Formate la date et renvoie un string
  */
-function formatDate (date, weekday) {
+function formatDate(date, weekday) {
   // date = '10/10'
   let temp = date.split('/')
 
@@ -382,4 +382,3 @@ function formatDate (date, weekday) {
 
   return jour + ' ' + temp[0] + ' ' + mois
 }
-
