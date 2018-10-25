@@ -27,7 +27,7 @@ module.exports.run = async (wbot, message, args) => {
     if (err) wbot.logger.log(err, 'error')
 
     // Récupération et formatage de l'uptime
-    const duration = moment.duration(wbot.uptime).format(' D [jour], H [heure] et m [minute], s [s]')
+    const duration = moment.duration(wbot.uptime).format(' D [jour], H [h] et m [minute], s [s]')
     const nbDevoirs = rows[0].server || 0
 
     var desc = ''
@@ -88,7 +88,7 @@ module.exports.help = {
 /**
  * Fonction permettant d'aligner le texte
  */
-function beautify (s) {
+function beautify(s) {
   if (s.length < 20) {
     for (let i = 0; i < 20; i++) {
       if (s.length < 20) s += '.'
