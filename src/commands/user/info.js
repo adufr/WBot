@@ -88,7 +88,7 @@ module.exports.help = {
 /**
  * Fonction permettant d'aligner le texte
  */
-function beautify(s) {
+function beautify (s) {
   if (s.length < 20) {
     for (let i = 0; i < 20; i++) {
       if (s.length < 20) s += '.'
