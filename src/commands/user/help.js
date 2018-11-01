@@ -60,7 +60,7 @@ module.exports.run = async (wbot, message, args) => {
         const embed = new Discord.RichEmbed()
           .setColor('#3586ff')
           .setTitle('Commande ' + prefix + command.help.name)
-          .setDescription(command.help.longDesc + `\n**Rappel :** Les crochets [] ne sont pas à utiliser lors de l'execution de la commande, ils indiquent juste la présence d'option(s) facultative(s)...`)
+          .setDescription(`${command.help.longDesc}\n**Rappel :**\n [] -> arguments facultatifs\n<> -> arguments obligatoires`)
           .addField('Utilisation', prefix + command.help.usage, true)
           .addField('Exemple', prefix + command.help.example, true)
           .addField('Aliases', '`' + wbot.getAliases(command.help.aliases) + '`')
