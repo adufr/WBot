@@ -51,7 +51,7 @@ module.exports = (wbot) => {
 
         // PAS DE DEVOIRS :
         if (rows[0] === undefined) {
-          embed.addField('Il n\'y a aucun devoir à venir ...', 'Pour ajouter un devoir, veuillez exécuter la commande `!devoirs_add` ou vous référer à l\'aide avec la commande `!help devoirs_add`.')
+          embed.addField(`Il n'y a aucun devoir à venir ...`, `Pour ajouter un devoir, veuillez exécuter la commande \`!devoirs_add\` ou vous référer à l'aide avec la commande \`!help devoirs_add\`.`)
           resolve(embed)
 
           // LISTE DES DEVOIRS :
@@ -73,13 +73,13 @@ module.exports = (wbot) => {
 
             // Si la date est la même que le champ d'avant : on rajoute au field
             if (datePassage !== undefined && datePassage === date) {
-              embed.fields[embed.fields.length - 1].value += '\n**`' + wbot.beautify(row.devoir_matiere, 14) + '`** - ' + row.devoir_contenu
+              embed.fields[embed.fields.length - 1].value += `\n**\`${wbot.beautify(row.devoir_matiere, 14)}\`** - ${row.devoir_contenu}`
 
               // Sinon, on rajoute un field (bloc)
             } else if (date === aujourdhui) {
-              embed.addField('Aujourd\'hui' + ' :', '**`' + wbot.beautify(row.devoir_matiere, 14) + '`** - ' + row.devoir_contenu)
+              embed.addField(`Aujourd'hui :`, `**:\`${wbot.beautify(row.devoir_matiere, 14)}\`** - ${row.devoir_contenu}`)
             } else if (date === demain) {
-              embed.addField('Demain' + ' :', '**`' + wbot.beautify(row.devoir_matiere, 14) + '`** - ' + row.devoir_contenu)
+              embed.addField('Demain :', `**\`${wbot.beautify(row.devoir_matiere, 14)}\`** - ${row.devoir_contenu}`)
             } else {
               embed.addField(formatDate(date, weekday) + ' :', '**`' + wbot.beautify(row.devoir_matiere, 14) + '`** - ' + row.devoir_contenu)
             }
@@ -202,15 +202,15 @@ module.exports = (wbot) => {
 
       // Calcul du temps à attendre avant de lancer les notifications
       const now = new Date()
-      var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 30, 0, 0) - now
+      var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 21, 19, 0, 0) - now
       if (millisTill10 < 0) millisTill10 += 8.64e7 // 86400000 = 24h
 
       // Lancement compte-à-rebours notification
       setTimeout(function () {
-        var messageNotif = '**Rappel pour demain @notif_devoirs : **'
+        var messageNotif = ''
         // Pour chaque devoir : on formate le message
         rows.forEach(function (row) {
-          messageNotif += '\n' + '**`' + wbot.beautify(row.devoir_matiere, 14) + '`** - ' + row.devoir_contenu
+          messageNotif += `\n**\`${wbot.beautify(row.devoir_matiere, 14)}\`** - ${row.devoir_contenu}`
         })
 
         // Création et envoie de l'embed
@@ -221,7 +221,13 @@ module.exports = (wbot) => {
           .setAuthor('WBot', wbot.user.avatarURL)
           .setTitle('Devoirs pour demain :')
           .setDescription(messageNotif)
-        wbot.channels.get(channelName).send(embed)
+
+        /**
+         * Envoie du message
+         */
+        const role = wbot.guilds.find(guild => guild.id === serveurId).roles.find(role => role.name === 'notif_devoirs')
+        if (role) wbot.channels.find(channel => channel.name === channelName).send(role.toString())
+        wbot.channels.find(channel => channel.name === channelName).send(embed)
       }, millisTill10)
     })
   }
@@ -232,6 +238,9 @@ module.exports = (wbot) => {
    * Compte à rebour pour lancer les notifications
    */
   wbot.dailyUpdate = () => {
+    // Lancement des notifications
+    wbot.notifyAllServers()
+
     // Calcul du temps à attendre avant de lancer les notifications
     const now = new Date()
     var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 3, 0, 0, 0) - now
@@ -248,8 +257,7 @@ module.exports = (wbot) => {
           wbot.updateDevoirsChannelDaily(row.serveur_discord_id)
         })
       })
-
-      // wbot.notifyAllServers()
+      // On relance l'actualisation
       wbot.dailyUpdate()
     }, millisTill10)
   }
