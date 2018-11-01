@@ -131,3 +131,11 @@ exports.argLengthBetween = (wbot, message, arg, min, max) => {
 exports.directMessage = (wbot, message) => {
   sendErrorEmbed(message, `Erreur : messages privés non supportés`, `Les messages privés ne sont pas supportés.\nSi vous souhaitez vous servir du WBot, vous devez l'inviter sur un serveur.`)
 }
+
+
+/**
+ * Date déjà passée
+ */
+exports.dateOutdated = (wbot, message) => {
+  sendErrorEmbed(message, `Erreur : date invalide`, `La date indiquée est déjà passée...`)
+}

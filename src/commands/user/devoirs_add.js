@@ -20,6 +20,16 @@ module.exports.run = async (wbot, message, args) => {
   const temp = args[1].split('/')
   const date = '20' + temp[2] + '-' + temp[1] + '-' + temp[0]
 
+
+  /**
+   * Si la date est déjà passée
+   */
+  if (new Date(date) < new Date()) {
+    wbot.errors.dateOutdated(wbot, message)
+    return
+  }
+
+
   args.shift()
   args.shift()
   const contenu = (args.join(' ')).replace(/"/g, '\\"') // on recréer le string + escape les quotes
