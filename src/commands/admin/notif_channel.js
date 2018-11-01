@@ -10,8 +10,27 @@ module.exports.run = async (wbot, message, args) => {
   /**
    * Longueur argument invalide
    */
-  if (args.length !== 1) {
+  if (args.length !== 0 && args.length !== 1) {
     wbot.errors.errorWrongUsage(wbot, this.help.name, message)
+    return
+  }
+
+
+  /**
+   * 0 argument - affichage du channel
+   */
+  if (args.length === 0) {
+    wbot.database.query(`SELECT serveur_channel_notif FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
+      if (err) wbot.logger.log(err, 'error')
+
+      const channelName = rows[0].serveur_channel_notif
+      // Vérification channel set ou non-set
+      if (channelName) {
+        wbot.sendSuccess(message, `Le channel défini est : **#${channelName}**`)
+      } else {
+        wbot.errors.channelNotDef(wbot, message, 'notifications')
+      }
+    })
     return
   }
 
@@ -25,10 +44,12 @@ module.exports.run = async (wbot, message, args) => {
   }
 
 
+  /**
+   * 1 argument - insertion du nouveau channel
+   */
   // Récupération de l'id du channel
   const channelId = (message.guild.channels.find(val => val.name === args[0])).id
-
-  // Insértion du nouveau channel
+  // Insertion
   wbot.database.query(`UPDATE serveur SET serveur_channel_notif = '${channelId}' WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
     if (err) wbot.logger.log(err, 'error')
 
@@ -52,10 +73,10 @@ module.exports.conf = {
  * Propriétés de la commande
  */
 module.exports.help = {
-  aliases: ['n_channel', 'notif_chan', 'n_chan', 'nc'],
+  aliases: ['n_channel', 'notif_chan', 'n_chan', 'n_c', 'nc'],
   name: 'notif_channel',
-  shortDesc: 'Défini le channel où envoyer les notifications de devoirs',
-  longDesc: 'Cette commande permet d\'afficher les notifications des devoirs du lendemain dans le le channel que vous souhaitez.',
-  usage: 'notif_channel <nomDuChannel>',
-  example: 'notif_channel notifications_devoirs'
+  shortDesc: 'Affiche / défini le channel où envoyer les notifications de rappel',
+  longDesc: 'Cette commande permet de définir le channel dans lequel afficher les notifications de rappel de devoirs, ou bien de l\'afficher si le channel est déjà défini.',
+  usage: 'notif_channel [nomDuChannel]',
+  example: 'nc notifications'
 }

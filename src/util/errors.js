@@ -65,10 +65,26 @@ exports.roleNotFound = (wbot, message, role) => {
 
 
 /**
- * Rôle non trouvé
+ * Rôle non défini
+ */
+exports.roleNotDef = (wbot, message, str) => {
+  sendErrorEmbed(message, 'Erreur : aucun rôle défini', 'Le rôle **' + str + '** n\'est pas défini...')
+}
+
+
+/**
+ * Channel non trouvé
  */
 exports.channelNotFound = (wbot, message, channel) => {
   sendErrorEmbed(message, 'Erreur : channel non trouvé', 'Le channel **' + channel + '** n\'a pas été trouvé...')
+}
+
+
+/**
+ * Channel non défini
+ */
+exports.channelNotDef = (wbot, message, str) => {
+  sendErrorEmbed(message, 'Erreur : aucun channel défini', 'Le channel de **' + str + '** n\'est pas défini...')
 }
 
 
