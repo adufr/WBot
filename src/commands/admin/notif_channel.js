@@ -53,7 +53,7 @@ module.exports.run = async (wbot, message, args) => {
     if (err) wbot.logger.log(err, 'error')
 
     // Message de succès
-    wbot.sendSuccess(message, `Les notifications s'afficheront désormais dans le channel : **${args[0]}**`)
+    wbot.sendSuccess(message, `Les notifications s'afficheront désormais dans le channel : **#${args[0]}**`)
   })
 }
 
