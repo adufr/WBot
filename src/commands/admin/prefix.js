@@ -21,7 +21,7 @@ module.exports.run = async (wbot, message, args) => {
     if (err) wbot.logger.log(err, 'error')
 
     // Message de succès
-    wbot.sendSuccess(message, 'Le nouveau préfixe est : **' + args[0] + '**')
+    wbot.sendSuccess(message, `Le nouveau préfixe est : **${args[0]}**`)
   })
 }
 

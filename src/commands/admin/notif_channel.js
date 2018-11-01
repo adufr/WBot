@@ -53,7 +53,7 @@ module.exports.run = async (wbot, message, args) => {
     if (err) wbot.logger.log(err, 'error')
 
     // Message de succès
-    wbot.sendSuccess(message, 'Les notifications s\'afficheront désormais dans le channel : **' + args[0] + '**')
+    wbot.sendSuccess(message, `Les notifications s'afficheront désormais dans le channel : **${args[0]}**`)
   })
 }
 
@@ -74,8 +74,8 @@ module.exports.conf = {
 module.exports.help = {
   aliases: ['n_channel', 'notif_chan', 'n_chan', 'n_c', 'nc'],
   name: 'notif_channel',
-  shortDesc: 'Affiche / défini le channel où envoyer les notifications de rappel',
-  longDesc: 'Cette commande permet de définir le channel dans lequel afficher les notifications de rappel de devoirs, ou bien de l\'afficher si le channel est déjà défini.',
+  shortDesc: 'Affiche / défini le channel où envoyer les rappels',
+  longDesc: `Cette commande permet de définir le channel dans lequel afficher les notifications de rappel de devoirs, ou bien de l'afficher si le channel est déjà défini.`,
   usage: 'notif_channel [nomDuChannel]',
   example: 'nc notifications'
 }

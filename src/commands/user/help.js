@@ -60,7 +60,7 @@ module.exports.run = async (wbot, message, args) => {
         const embed = new Discord.RichEmbed()
           .setColor('#3586ff')
           .setTitle('Commande ' + prefix + command.help.name)
-          .setDescription(command.help.longDesc + '\n**Rappel :** Les crochets [] ne sont pas à utiliser lors de l\'execution de la commande, ils indiquent juste la présence d\'option(s) facultative(s)...')
+          .setDescription(command.help.longDesc + `\n**Rappel :** Les crochets [] ne sont pas à utiliser lors de l'execution de la commande, ils indiquent juste la présence d'option(s) facultative(s)...`)
           .addField('Utilisation', prefix + command.help.usage, true)
           .addField('Exemple', prefix + command.help.example, true)
           .addField('Aliases', '`' + wbot.getAliases(command.help.aliases) + '`')
@@ -103,7 +103,7 @@ module.exports.help = {
   aliases: ['commandes', 'commands', 'aide', 'halp', 'h'],
   name: 'help',
   shortDesc: 'Affiche aide du bot (ou de la commande)',
-  longDesc: 'La commande help supporte 1 argument facultatif. Si aucun argument n\'est renseigné, le bot renverra la liste complète des commandes disponibles. Sinon, si l\'argument est une commande (ou un alias), vous obtiendrez la description complète de la commande.\n',
+  longDesc: `La commande help supporte 1 argument facultatif. Si aucun argument n'est renseigné, le bot renverra la liste complète des commandes disponibles. Sinon, si l'argument est une commande (ou un alias), vous obtiendrez la description complète de la commande.\n`,
   usage: 'help [commande]',
   example: 'help prefix'
 }

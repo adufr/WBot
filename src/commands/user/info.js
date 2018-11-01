@@ -78,7 +78,7 @@ module.exports.help = {
   aliases: ['stats', 'bot', 'src'],
   name: 'info',
   shortDesc: 'Affiche diverses informations du bot',
-  longDesc: 'La commande info vous permet d\'obtenir des informations (principalement techniques) sur le bot. Vous pouvez ainsi surveiller le fait qu\'il soit à jour, ou bien avoir une idée du nombre de personnes qui l\'utilisent...',
+  longDesc: `La commande info vous permet d'obtenir des informations (principalement techniques) sur le bot. Vous pouvez ainsi surveiller le fait qu'il soit à jour, ou bien avoir une idée du nombre de personnes qui l'utilisent...`,
   usage: 'info',
   example: 'info'
 }

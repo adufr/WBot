@@ -28,7 +28,7 @@ module.exports.run = async (wbot, message, args) => {
   /**
    * Insertion des nouveaux devoirs
    */
-  wbot.database.query(`INSERT INTO devoir (devoir_matiere, devoir_contenu, devoir_date, serveur_discord_id) VALUES ("${matiere}", "${contenu}", '` + date + `', "${message.guild.id}")`, function (err, rows, fields) {
+  wbot.database.query(`INSERT INTO devoir (devoir_matiere, devoir_contenu, devoir_date, serveur_discord_id) VALUES ('${matiere}', '${contenu}', '${date}', '${message.guild.id}')`, function (err, rows, fields) {
     if (err) wbot.logger.log(err, 'error')
 
     // Message de succès
@@ -59,7 +59,7 @@ module.exports.help = {
   aliases: ['dev_add', 'd_add', 'dev_a', 'da'],
   name: 'devoirs_add',
   shortDesc: 'Ajoute des devoirs',
-  longDesc: 'Permet d\'ajouter des devoirs sur le serveur actuel. Pour cela renseignez les paramètres requis (voir exemple), et le bot se chargera ensuite de mettre à jour la liste des devoirs automatiquement.',
+  longDesc: `Permet d'ajouter des devoirs sur le serveur actuel. Pour cela renseignez les paramètres requis (voir exemple), et le bot se chargera ensuite de mettre à jour la liste des devoirs automatiquement.`,
   usage: 'devoirs_add <matière> <date> <description>',
-  example: 'devoirs_add Maths 30/09/18 Faire les exercices 6 et 9 de la page 420'
+  example: `devoirs_add Maths 30/09/18 Faire l'exercice 69 de la page 420`
 }

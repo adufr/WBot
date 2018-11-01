@@ -1,7 +1,7 @@
 /**
-* Code appelé lors que l'event "message" est triggered :
-* (lancement des commandes)
-*/
+ * Code appelé lors que l'event "message" est triggered :
+ * (lancement des commandes)
+ */
 module.exports = (wbot, message) => {
   // Ne prend pas en charge les msgs d'autres bots
   if (message.author.bot) return
@@ -22,7 +22,7 @@ module.exports = (wbot, message) => {
 
     // (Au cas où l'on oublie le prefix)
     if (message.content === 'WBot') {
-      message.channel.send('Le préfixe est : ' + prefix)
+      message.channel.send(`Le préfixe est : ${prefix}`)
     }
 
 
@@ -37,8 +37,8 @@ module.exports = (wbot, message) => {
 
 
     /**
-    * Chargement des commandes :
-    */
+     * Chargement des commandes :
+     */
     let commandFile = wbot.commands.get(cmd.slice(prefix.length))
 
     if (!commandFile) {
@@ -48,8 +48,8 @@ module.exports = (wbot, message) => {
 
 
     /**
-    * Aucune permission requise
-    */
+     * Aucune permission requise
+     */
     if (commandFile.conf.permission === 0) {
       // Exécution de la commande
       commandFile.run(wbot, message, args)

@@ -51,7 +51,7 @@ module.exports.run = async (wbot, message, args) => {
     if (err) wbot.logger.log(err, 'error')
 
     // Message de succès
-    wbot.sendSuccess(message, 'Les devoirs s\'afficheront désormais dans le channel : **' + args[0] + '**')
+    wbot.sendSuccess(message, `Les devoirs s'afficheront désormais dans le channel : **${args[0]}**`)
   })
 }
 
@@ -72,8 +72,8 @@ module.exports.conf = {
 module.exports.help = {
   aliases: ['dev_channel', 'd_chan', 'dev_c', 'd_c', 'dc'],
   name: 'devoirs_channel',
-  shortDesc: 'Affiche / défini le channel où lister les devoirs',
-  longDesc: 'Cette commande permet de définir le channel dans lequel les devoirs s\'afficheront, ou bien le l\'afficher si le channel a déjà été défifini.',
+  shortDesc: `Affiche / défini le channel où lister les devoirs`,
+  longDesc: `Cette commande permet de définir le channel dans lequel les devoirs s'afficheront, ou bien le l'afficher si le channel a déjà été défifini.`,
   usage: 'devoirs_channel [nomDuChannel]',
   example: 'dc devoirs'
 }

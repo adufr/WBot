@@ -31,10 +31,10 @@ module.exports.conf = {
  * Propriétés de la commande
  */
 module.exports.help = {
-  aliases: ['up'],
+  aliases: ['up', 'u'],
   name: 'update',
   shortDesc: 'Update les devoirs avec les notifications',
-  longDesc: 'Permet d\'update tout les devoirs ainsi que les notifications dans le serveur',
+  longDesc: `Permet d'update tout les devoirs ainsi que les notifications dans le serveur.`,
   usage: 'update',
-  example: 'update'
+  example: 'up'
 }

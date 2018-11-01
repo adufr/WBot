@@ -52,7 +52,7 @@ module.exports.run = async (wbot, message, args) => {
     if (err) wbot.logger.log(err, 'error')
 
     // Message de succès
-    wbot.sendSuccess(message, 'Le rôle : **' + args[0] + '** a désormais les droits d\'administrateur')
+    wbot.sendSuccess(message, `Le rôle : **${args[0]}** a désormais les droits d'administrateur`)
   })
 }
 
@@ -73,8 +73,8 @@ module.exports.conf = {
 module.exports.help = {
   aliases: ['a_role', 'admin_r', 'a_r', 'ar'],
   name: 'admin_role',
-  shortDesc: 'Affiche / défini le rôle aillant les droits d\'admin',
-  longDesc: 'Cette commande permet de définir le rôle aillant les droits d\'administrateur. Toutes les personnes possédant ce rôle aura donc le droit d\'utiliser les commandes "administrateur".',
+  shortDesc: `Affiche / défini le rôle aillant les droits d'admin`,
+  longDesc: `Cette commande permet de définir le rôle aillant les droits d'administrateur. Toutes les personnes possédant ce rôle aura donc le droit d'utiliser les commandes "administrateur".`,
   usage: 'admin_role [nomDuRole]',
   example: 'ar Administrateur'
 }
