@@ -23,10 +23,10 @@ module.exports.run = async (wbot, message, args) => {
     wbot.database.query(`SELECT serveur_channel_devoirs FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
 
-      const channelName = rows[0].serveur_channel_devoirs
+      const channel = message.guild.channels.find(channel => channel.id === rows[0].serveur_channel_devoirs)
       // Vérification channel set ou non-set
-      if (channelName) {
-        wbot.sendSuccess(message, `Le channel défini est : **#${channelName}**`)
+      if (channel) {
+        wbot.sendSuccess(message, `Le channel défini est : **#${channel.name}**`)
       } else {
         wbot.errors.channelNotDef(wbot, message, 'devoirs')
       }
@@ -38,7 +38,7 @@ module.exports.run = async (wbot, message, args) => {
   /**
    * Si le channel n'existe pas
    */
-  if (message.guild.channels.some(val => val.name === args[0]) === false) {
+  if (message.guild.channels.some(channel => channel.name === args[0]) === false) {
     wbot.errors.channelNotFound(wbot, message, args[0])
     return
   }
@@ -47,11 +47,14 @@ module.exports.run = async (wbot, message, args) => {
   /**
    * 1 argument - insertion du nouveau channel
    */
-  wbot.database.query(`UPDATE serveur SET serveur_channel_devoirs = '${args[0]}' WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
+  // Récupération de l'id du channel
+  const channel = message.guild.channels.find(channel => channel.name === args[0])
+  // Insertion
+  wbot.database.query(`UPDATE serveur SET serveur_channel_devoirs = '${channel.id}' WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
     if (err) wbot.logger.log(err, 'error')
 
     // Message de succès
-    wbot.sendSuccess(message, `Les devoirs s'afficheront désormais dans le channel : **${args[0]}**`)
+    wbot.sendSuccess(message, `Les devoirs s'afficheront désormais dans le channel : **#${args[0]}**`)
   })
 }
 

@@ -103,7 +103,7 @@ module.exports = (wbot) => {
     // Update des notifications
     wbot.database.query(`SELECT serveur_channel_notif FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
-      wbot.notify(message.guild.id, rows[0].serveur_channel_notif)
+      wbot.notify(message.guild.id, wbot.channels.find(channel => channel.id === rows[0].serveur_channel_notif).name)
     })
     // Récupération du channel
     wbot.database.query(`SELECT serveur_channel_devoirs FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
@@ -112,22 +112,22 @@ module.exports = (wbot) => {
       /**
        * Si le channel n'existe pas
        */
-      if (message.guild.channels.some(val => val.name === rows[0].serveur_channel_devoirs) === false) {
-        wbot.errors.channelNotFound(wbot, message, rows[0].serveur_channel_devoirs)
+      if (message.guild.channels.some(channel => channel.id === rows[0].serveur_channel_devoirs) === false) {
+        wbot.errors.channelNotFound(wbot, message, 'devoirs')
         return
       }
 
       /**
        * Suppression du dernier message du bot
        */
-      message.guild.channels.find(val => val.name === rows[0].serveur_channel_devoirs).fetchMessages()
+      message.guild.channels.find(channel => channel.id === rows[0].serveur_channel_devoirs).fetchMessages()
         .then(function (msgs) {
           msgs.filter(m => m.author.id === wbot.user.id)
           if (msgs.size) msgs.first().delete()
           Promise.all([
             wbot.getEmbedDevoirs('message', message)
           ]).then(function (response) {
-            message.guild.channels.find(val => val.name === rows[0].serveur_channel_devoirs).send(response[0])
+            message.guild.channels.find(channel => channel.id === rows[0].serveur_channel_devoirs).send(response[0])
           })
         })
     })
@@ -143,7 +143,7 @@ module.exports = (wbot) => {
     // Update des notifications
     wbot.database.query(`SELECT serveur_channel_notif FROM serveur WHERE serveur_discord_id = '${discordId}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
-      wbot.notify(discordId, rows[0].serveur_channel_notif)
+      wbot.notify(discordId, wbot.channels.find(channel => channel.id === rows[0].serveur_channel_notif).name)
     })
     // Update du message de devoirs
     wbot.database.query(`SELECT serveur_channel_devoirs FROM serveur WHERE serveur_discord_id = '${discordId}'`, function (err, rows, fields) {
@@ -152,20 +152,20 @@ module.exports = (wbot) => {
       /**
        * Si le channel n'existe pas
        */
-      if (wbot.guilds.get(discordId).channels.some(val => val.name === rows[0].serveur_channel_devoirs) === false) return
+      if (wbot.guilds.get(discordId).channels.some(channel => channel.id === rows[0].serveur_channel_devoirs) === false) return
 
       /**
        * Suppression du dernier message du bot
        * Puis envoie du nouveau message mis-à-jour
        */
-      wbot.guilds.get(discordId).channels.find(val => val.name === rows[0].serveur_channel_devoirs).fetchMessages()
+      wbot.guilds.get(discordId).channels.find(channel => channel.id === rows[0].serveur_channel_devoirs).fetchMessages()
         .then(function (msgs) {
           msgs.filter(m => m.author.id === wbot.user.id)
           if (msgs.size) msgs.first().delete()
           Promise.all([
             wbot.getEmbedDevoirs('discordId', discordId)
           ]).then(function (response) {
-            wbot.guilds.get(discordId).channels.find(val => val.name === rows[0].serveur_channel_devoirs).send(response[0])
+            wbot.guilds.get(discordId).channels.find(channel => channel.id === rows[0].serveur_channel_devoirs).send(response[0])
           })
         })
     })
@@ -183,7 +183,8 @@ module.exports = (wbot) => {
 
       // Envoie notification
       rows.forEach(function (row) {
-        wbot.notify(row.serveur_discord_id, row.serveur_channel_notif)
+        if (!row.serveur_channel_notif) return
+        wbot.notify(row.serveur_discord_id, wbot.guilds.find(guild => guild.id === row.serveur_discord_id).channels.find(channel => channel.id === row.serveur_channel_notif).name)
       })
     })
   }
@@ -202,7 +203,7 @@ module.exports = (wbot) => {
 
       // Calcul du temps à attendre avant de lancer les notifications
       const now = new Date()
-      var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 21, 19, 0, 0) - now
+      var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 22, 6, 0, 0) - now
       if (millisTill10 < 0) millisTill10 += 8.64e7 // 86400000 = 24h
 
       // Lancement compte-à-rebours notification
@@ -248,7 +249,7 @@ module.exports = (wbot) => {
 
     // Lancement compte-à-rebours avant update devoirs / notifications
     setTimeout(function () {
-      wbot.database.query(`SELECT serveur_discord_id, serveur_channel_notif FROM serveur`, function (err, rows, fields) {
+      wbot.database.query(`SELECT serveur_discord_id FROM serveur`, function (err, rows, fields) {
         if (err) wbot.logger.log(err, 'error')
         if (rows[0] === undefined) return
 
