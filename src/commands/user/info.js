@@ -31,20 +31,20 @@ module.exports.run = async (wbot, message, args) => {
     const nbDevoirs = rows[0].server || 0
 
     var desc = ''
-    desc += '**`' + beautify('Version du bot') + '`** : v' + packageJson.version + '\n'
-    desc += '**`' + beautify('Version discordjs') + '`** : v' + packageJson.dependencies['discord.js'] + '\n'
-    desc += '**`' + beautify('Version nodejs') + '`** : ' + process.version + '\n'
-    desc += '**`' + beautify('Code source') + '`** : [Woosy/WBot](https://github.com/Woosy/WBot) \n'
+    desc += '**`' + wbot.beautify('Version du bot', 20) + '`** : v' + packageJson.version + '\n'
+    desc += '**`' + wbot.beautify('Version discordjs', 20) + '`** : v' + packageJson.dependencies['discord.js'] + '\n'
+    desc += '**`' + wbot.beautify('Version nodejs', 20) + '`** : ' + process.version + '\n'
+    desc += '**`' + wbot.beautify('Code source', 20) + '`** : [Woosy/WBot](https://github.com/Woosy/WBot) \n'
     desc += '---------------------------\n'
-    desc += '**`' + beautify('Uptime') + '`** : ' + duration + '\n'
-    desc += '**`' + beautify('Memory usage') + '`** : ' + (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) + ' MB\n'
+    desc += '**`' + wbot.beautify('Uptime', 20) + '`** : ' + duration + '\n'
+    desc += '**`' + wbot.beautify('Memory usage', 20) + '`** : ' + (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) + ' MB\n'
     desc += '---------------------------\n'
-    desc += '**`' + beautify('Serveurs') + '`** : ' + wbot.guilds.size + '\n'
-    desc += '**`' + beautify('Channels') + '`** : ' + wbot.channels.size + '\n'
-    desc += '**`' + beautify('Utilisateurs') + '`** : ' + wbot.users.size + '\n'
+    desc += '**`' + wbot.beautify('Serveurs', 20) + '`** : ' + wbot.guilds.size + '\n'
+    desc += '**`' + wbot.beautify('Channels', 20) + '`** : ' + wbot.channels.size + '\n'
+    desc += '**`' + wbot.beautify('Utilisateurs', 20) + '`** : ' + wbot.users.size + '\n'
     desc += '---------------------------\n'
-    desc += '**`' + beautify('Nb devoirs serveur') + '`** : ' + nbDevoirs + '\n'
-    desc += '**`' + beautify('Nb devoirs totaux') + '`** : ' + rows[0].total + '\n'
+    desc += '**`' + wbot.beautify('Nb devoirs serveur', 20) + '`** : ' + nbDevoirs + '\n'
+    desc += '**`' + wbot.beautify('Nb devoirs totaux', 20) + '`** : ' + rows[0].total + '\n'
 
     // Construction de la réponse
     const embed = new Discord.RichEmbed()
@@ -81,18 +81,4 @@ module.exports.help = {
   longDesc: `La commande info vous permet d'obtenir des informations (principalement techniques) sur le bot. Vous pouvez ainsi surveiller le fait qu'il soit à jour, ou bien avoir une idée du nombre de personnes qui l'utilisent...`,
   usage: 'info',
   example: 'info'
-}
-
-
-
-/**
- * Fonction permettant d'aligner le texte
- */
-function beautify (s) {
-  if (s.length < 20) {
-    for (let i = 0; i < 20; i++) {
-      if (s.length < 20) s += '.'
-    }
-  }
-  return s
 }

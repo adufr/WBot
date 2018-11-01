@@ -46,8 +46,8 @@ module.exports.run = async (wbot, message, args) => {
 
 
   /**
-   * 1 arg - affiche toutes les informations de la commande spécifiée
-   */
+     * 1 arg - affiche toutes les informations de la commande spécifiée
+     */
   if (args.length === 1) {
     wbot.database.query(`SELECT serveur_prefix FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
@@ -73,8 +73,8 @@ module.exports.run = async (wbot, message, args) => {
     })
   } else {
     /**
-     * Trop d'arguments -> erreur
-     */
+       * Trop d'arguments -> erreur
+       */
     const name = this.help.name
     wbot.database.query(`SELECT serveur_prefix FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
@@ -115,19 +115,6 @@ module.exports.help = {
 // ===========================================================
 
 /**
- * Alignement des éléments
- */
-function beautify (s) {
-  if (s.length < 22) {
-    for (let i = 0; i < 22; i++) {
-      if (s.length < 22) s += '.'
-    }
-  }
-  return s
-}
-
-
-/**
  * Fonction async retournant une promesse avec la liste de toutes
  * les commandes et leur short-desc
  */
@@ -146,7 +133,7 @@ function loadCommands (wbot, commandsPath) {
       // Pour chaque commande
       jsFile.forEach((f, i) => {
         const props = require(`${commandsPath}/${f}`)
-        description += '`!' + beautify(props.help.name) + '` - ' + props.help.shortDesc + '\n'
+        description += '`!' + wbot.beautify(props.help.name, 22) + '` - ' + props.help.shortDesc + '\n'
       })
       resolve(description)
     })

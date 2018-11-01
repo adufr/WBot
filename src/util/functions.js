@@ -73,15 +73,15 @@ module.exports = (wbot) => {
 
             // Si la date est la même que le champ d'avant : on rajoute au field
             if (datePassage !== undefined && datePassage === date) {
-              embed.fields[embed.fields.length - 1].value += '\n**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu
+              embed.fields[embed.fields.length - 1].value += '\n**`' + wbot.beautify(row.devoir_matiere, 14) + '`** - ' + row.devoir_contenu
 
               // Sinon, on rajoute un field (bloc)
             } else if (date === aujourdhui) {
-              embed.addField('Aujourd\'hui' + ' :', '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu)
+              embed.addField('Aujourd\'hui' + ' :', '**`' + wbot.beautify(row.devoir_matiere, 14) + '`** - ' + row.devoir_contenu)
             } else if (date === demain) {
-              embed.addField('Demain' + ' :', '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu)
+              embed.addField('Demain' + ' :', '**`' + wbot.beautify(row.devoir_matiere, 14) + '`** - ' + row.devoir_contenu)
             } else {
-              embed.addField(formatDate(date, weekday) + ' :', '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu)
+              embed.addField(formatDate(date, weekday) + ' :', '**`' + wbot.beautify(row.devoir_matiere, 14) + '`** - ' + row.devoir_contenu)
             }
 
             datePassage = date
@@ -203,14 +203,14 @@ module.exports = (wbot) => {
       // Calcul du temps à attendre avant de lancer les notifications
       const now = new Date()
       var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 30, 0, 0) - now
-      if (millisTill10 < 0) millisTill10 += 8.64e7 // 86400000 = 24h 
+      if (millisTill10 < 0) millisTill10 += 8.64e7 // 86400000 = 24h
 
       // Lancement compte-à-rebours notification
       setTimeout(function () {
         var messageNotif = '**Rappel pour demain @notif_devoirs : **'
         // Pour chaque devoir : on formate le message
         rows.forEach(function (row) {
-          messageNotif += '\n' + '**`' + beautify(row.devoir_matiere) + '`** - ' + row.devoir_contenu
+          messageNotif += '\n' + '**`' + wbot.beautify(row.devoir_matiere, 14) + '`** - ' + row.devoir_contenu
         })
 
         // Création et envoie de l'embed
@@ -273,6 +273,20 @@ module.exports = (wbot) => {
 
 
   /**
+   * Fonction permettant d'aligner le texte
+   */
+  wbot.beautify = (string, size) => {
+    if (string.length < size) {
+      for (let i = 0; i < size; i++) {
+        if (string.length < size) string += '.'
+      }
+    }
+    return string
+  }
+
+
+
+  /**
    * Ces deux méthodes vont catch les exceptions et 'donner plus de détails' sur les
    * erreurs et leurs stack trace (bien qu'elles laisseront le code planter au
    * cas où...)
@@ -294,19 +308,6 @@ module.exports = (wbot) => {
 // == Autres petites fonctions
 // == (uniquement accessible dans ce fichier)
 // ===========================================================
-
-/**
- * Fonction permettant d'aligner le texte
- */
-function beautify (s) {
-  if (s.length < 14) {
-    for (let i = 0; i < 14; i++) {
-      if (s.length < 14) s += '.'
-    }
-  }
-  return s
-}
-
 
 /**
  * Formate la date et renvoie un string
