@@ -48,9 +48,8 @@ module.exports.run = async (wbot, message, args) => {
    * 1 argument - insertion du nouveau channel
    */
   // Récupération de l'id du channel
-  const channelId = (message.guild.channels.find(val => val.name === args[0])).id
   // Insertion
-  wbot.database.query(`UPDATE serveur SET serveur_channel_notif = '${channelId}' WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
+  wbot.database.query(`UPDATE serveur SET serveur_channel_notif = '${args[0]}' WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
     if (err) wbot.logger.log(err, 'error')
 
     // Message de succès
