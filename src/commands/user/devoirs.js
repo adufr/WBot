@@ -36,7 +36,7 @@ module.exports.help = {
   aliases: ['dev', 'd'],
   name: 'devoirs',
   shortDesc: 'Affiche la liste des des devoirs à venir',
-  longDesc: `Cette commande permet d'afficher les devoirs à venir, en fonction de leur date. Pour ajout des devoirs, executez la commande \`!da\` (voir \`!h da\`).`,
+  longDesc: `Cette commande permet d'afficher les devoirs à venir en fonction de leur date. Pour ajout des devoirs, executez la commande \`!da\` (voir \`!h da\`).`,
   usage: 'devoirs',
   example: 'devoirs'
 }
