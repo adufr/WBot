@@ -37,7 +37,7 @@ module.exports.run = async (wbot, message, args) => {
     desc += '**`' + wbot.beautify('Code source', 20) + '`** : [Woosy/WBot](https://github.com/Woosy/WBot) \n'
     desc += '---------------------------\n'
     desc += '**`' + wbot.beautify('Uptime', 20) + '`** : ' + duration + '\n'
-    desc += '**`' + wbot.beautify('Memory usage', 20) + '`** : ' + (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) + ' MB\n'
+    desc += '**`' + wbot.beautify('Utilisation mémoire', 20) + '`** : ' + (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2) + ' MB\n'
     desc += '---------------------------\n'
     desc += '**`' + wbot.beautify('Serveurs', 20) + '`** : ' + wbot.guilds.size + '\n'
     desc += '**`' + wbot.beautify('Channels', 20) + '`** : ' + wbot.channels.size + '\n'
