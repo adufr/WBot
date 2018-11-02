@@ -77,7 +77,7 @@ module.exports = (wbot) => {
 
               // Sinon, on rajoute un field (bloc)
             } else if (date === aujourdhui) {
-              embed.addField(`Aujourd'hui :`, `**:\`${wbot.beautify(row.devoir_matiere, 14)}\`** - ${row.devoir_contenu}`)
+              embed.addField(`Aujourd'hui :`, `**\`${wbot.beautify(row.devoir_matiere, 14)}\`** - ${row.devoir_contenu}`)
             } else if (date === demain) {
               embed.addField('Demain :', `**\`${wbot.beautify(row.devoir_matiere, 14)}\`** - ${row.devoir_contenu}`)
             } else {
