@@ -103,7 +103,8 @@ module.exports = (wbot) => {
     // Update des notifications
     wbot.database.query(`SELECT serveur_channel_notif FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
-      wbot.notify(message.guild.id, wbot.channels.find(channel => channel.id === rows[0].serveur_channel_notif).name)
+      const channel = wbot.channels.find(channel => channel.id === rows[0].serveur_channel_notif)
+      if (channel) wbot.notify(message.guild.id, channel.name)
     })
     // Récupération du channel
     wbot.database.query(`SELECT serveur_channel_devoirs FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
@@ -143,7 +144,8 @@ module.exports = (wbot) => {
     // Update des notifications
     wbot.database.query(`SELECT serveur_channel_notif FROM serveur WHERE serveur_discord_id = '${discordId}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
-      wbot.notify(discordId, wbot.channels.find(channel => channel.id === rows[0].serveur_channel_notif).name)
+      const channel = wbot.channels.find(channel => channel.id === rows[0].serveur_channel_notif)
+      if (channel) wbot.notify(discordId, channel.name)
     })
     // Update du message de devoirs
     wbot.database.query(`SELECT serveur_channel_devoirs FROM serveur WHERE serveur_discord_id = '${discordId}'`, function (err, rows, fields) {
@@ -184,7 +186,8 @@ module.exports = (wbot) => {
       // Envoie notification
       rows.forEach(function (row) {
         if (!row.serveur_channel_notif) return
-        wbot.notify(row.serveur_discord_id, wbot.guilds.find(guild => guild.id === row.serveur_discord_id).channels.find(channel => channel.id === row.serveur_channel_notif).name)
+        const channel = wbot.guilds.find(guild => guild.id === row.serveur_discord_id).channels.find(channel => channel.id === row.serveur_channel_notif)
+        if (channel) wbot.notify(row.serveur_discord_id, channel.name)
       })
     })
   }
