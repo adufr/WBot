@@ -275,7 +275,7 @@ module.exports = (wbot) => {
     const embed = new Discord.RichEmbed()
       .setColor('#00B200')
       .setDescription(msg)
-      .setAuthor('Succès !', wbot.user.avatarURL)
+      .setAuthor('Succès !')
       .setFooter(message.author.username, message.author.avatarURL)
       .setTimestamp()
 
