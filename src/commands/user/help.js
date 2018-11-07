@@ -102,7 +102,7 @@ module.exports.conf = {
 module.exports.help = {
   aliases: ['commandes', 'commands', 'aide', 'halp', 'h'],
   name: 'help',
-  shortDesc: 'Affiche aide du bot (ou de la commande)',
+  shortDesc: `Affiche l'aide du bot (ou de la commande)`,
   longDesc: `La commande help supporte 1 argument facultatif. Si aucun argument n'est renseigné, le bot renverra la liste complète des commandes disponibles. Sinon, si l'argument est une commande (ou un alias), vous obtiendrez la description complète de la commande.\n`,
   usage: 'help [commande]',
   example: 'help prefix'
