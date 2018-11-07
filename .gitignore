@@ -1,5 +1,7 @@
 # Fichier token
 token.js
+# Fichier de config
+owners.json
 
 # Logs
 logs/
