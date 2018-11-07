@@ -52,7 +52,7 @@ exports.noPerm = (wbot, message) => {
  * Utilisateur non trouvé
  */
 exports.userNotFound = (wbot, message, user) => {
-  sendErrorEmbed(message, `Erreur : utilisateur non trouvé`, `L'utilisateur **${user.username}** n'est pas sur ce serveur...`)
+  sendErrorEmbed(message, `Erreur : utilisateur non trouvé`, `L'utilisateur **${user}** n'est pas sur ce serveur...`)
 }
 
 
