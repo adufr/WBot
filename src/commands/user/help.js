@@ -80,7 +80,7 @@ module.exports.run = async (wbot, message, args) => {
       if (err) wbot.logger.log(err, 'error')
       const prefix = rows[0].prefix
       const command = wbot.commands.get(name)
-      wbot.errors.errorWrongUsage(wbot, prefix, command, message)
+      wbot.errors.wrongUsage(wbot, prefix, command, message)
     })
   }
 }

@@ -92,7 +92,7 @@ exports.channelNotDef = (wbot, message, str) => {
  * Commande mal executée
  * (utilisation incorrecte)
  */
-exports.errorWrongUsage = (wbot, commandName, message) => {
+exports.wrongUsage = (wbot, commandName, message) => {
   const command = wbot.commands.get(commandName)
   sendErrorEmbed(message, `Erreur : utilisation incorrecte`, `Usage : **!${command.help.usage}**`)
 }

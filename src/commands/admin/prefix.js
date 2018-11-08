@@ -11,7 +11,7 @@ module.exports.run = async (wbot, message, args) => {
    * Longueur argument invalide
    */
   if (args.length !== 1) {
-    wbot.errors.errorWrongUsage(wbot, this.help.name, message)
+    wbot.errors.wrongUsage(wbot, this.help.name, message)
     return
   }
 
