@@ -1,7 +1,7 @@
 # WBot
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d51355f9284b4c7da809a167e36dbd87)](https://app.codacy.com/app/WBot/WBot?utm_source=github.com&utm_medium=referral&utm_content=Woosy/WBot&utm_campaign=Badge_Grade_Dashboard)
-[![Apache 2.0 Licence](https://img.shields.io/hexpm/l/plug.svg)](https://tldrlegal.com/license/apache-license-2.0-(apache-2.0))
+[![Apache-2.0 Licence](https://img.shields.io/hexpm/l/plug.svg)](https://tldrlegal.com/license/apache-license-2.0-(apache-2.0))
 [![WBot's version](https://img.shields.io/badge/version-0.0.01-brightgreen.svg)](https://discord.gg/ff4f52s)
 ![GitHub issues](https://img.shields.io/github/issues-raw/woosy/WBot.svg)
 ![GitHub last commit](https://img.shields.io/github/last-commit/woosy/WBot.svg)
@@ -16,7 +16,15 @@ WBot is a **Discord bot**, made in Javascript using **discord.js**. WBot is also
 
 ## Features
 
-*This section will come later*
+Currently, WBot allows you to do the following things:
+
+* Create homeworks for a given date
+* Manually list all coming homeworks (with a command)
+* Automatically posting the updated homework list on a configured channel
+* Get notified the day before a homework assignment
+
+* Define a custom prefix by guild
+* Set an existing role as the bot admin
 
 ## Authors
 
@@ -32,10 +40,4 @@ WBot is a **Discord bot**, made in Javascript using **discord.js**. WBot is also
 
 ## License
 
-[![Apache 2.0 Licence](https://img.shields.io/hexpm/l/plug.svg)](https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)) - This project is under Apache 2.0 license.
-
----
-
-## How to clone WBot and make your own bot
-
-*This section will come later, since the bot is still on a very early development stage.*
+[![Apache-2.0 Licence](https://img.shields.io/hexpm/l/plug.svg)](https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)) - This project is under Apache-2.0 license.
