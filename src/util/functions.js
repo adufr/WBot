@@ -100,12 +100,6 @@ module.exports = (wbot) => {
    * puis reposte le message actualisé)
    */
   wbot.updateDevoirsChannel = (message) => {
-    // Update des notifications
-    wbot.database.query(`SELECT serveur_channel_notif FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
-      if (err) wbot.logger.log(err, 'error')
-      const channel = wbot.channels.find(channel => channel.id === rows[0].serveur_channel_notif)
-      if (channel) wbot.notify(message.guild.id, channel.name)
-    })
     // Récupération du channel
     wbot.database.query(`SELECT serveur_channel_devoirs FROM serveur WHERE serveur_discord_id = '${message.guild.id}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
@@ -141,12 +135,6 @@ module.exports = (wbot) => {
    * contenant le message de devoirs
    */
   wbot.updateDevoirsChannelDaily = (discordId) => {
-    // Update des notifications
-    wbot.database.query(`SELECT serveur_channel_notif FROM serveur WHERE serveur_discord_id = '${discordId}'`, function (err, rows, fields) {
-      if (err) wbot.logger.log(err, 'error')
-      const channel = wbot.channels.find(channel => channel.id === rows[0].serveur_channel_notif)
-      if (channel) wbot.notify(discordId, channel.name)
-    })
     // Update du message de devoirs
     wbot.database.query(`SELECT serveur_channel_devoirs FROM serveur WHERE serveur_discord_id = '${discordId}'`, function (err, rows, fields) {
       if (err) wbot.logger.log(err, 'error')
@@ -198,19 +186,19 @@ module.exports = (wbot) => {
    * Système de notifications
    */
   wbot.notify = (serveurId, channelName) => {
-    // Récupération des devoirs pour le lendemain
-    wbot.database.query(`SELECT DISTINCT devoir_matiere, devoir_contenu, devoir_date FROM devoir, serveur WHERE devoir.serveur_discord_id = '${serveurId}' AND devoir_date = CURDATE() + interval 1 day ORDER BY devoir_date`, function (err, rows, fields) {
-      if (err) wbot.logger.log(err, 'error')
-      // Si il n'y en n'a pas : return
-      if (rows === undefined || rows.length === 0) return
+    // Calcul du temps à attendre avant de lancer les notifications
+    const now = new Date()
+    var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 30, 0, 0) - now
+    if (millisTill10 < 0) millisTill10 += 8.64e7 // 86400000 = 24h
 
-      // Calcul du temps à attendre avant de lancer les notifications
-      const now = new Date()
-      var millisTill10 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 18, 30, 0, 0) - now
-      if (millisTill10 < 0) millisTill10 += 8.64e7 // 86400000 = 24h
+    // Lancement compte-à-rebours notification
+    setTimeout(function () {
+      // Récupération des devoirs pour le lendemain
+      wbot.database.query(`SELECT DISTINCT devoir_matiere, devoir_contenu, devoir_date FROM devoir, serveur WHERE devoir.serveur_discord_id = '${serveurId}' AND devoir_date = CURDATE() + interval 1 day ORDER BY devoir_date`, function (err, rows, fields) {
+        if (err) wbot.logger.log(err, 'error')
+        // Si il n'y en n'a pas : return
+        if (rows === undefined || rows.length === 0) return
 
-      // Lancement compte-à-rebours notification
-      setTimeout(function () {
         var messageNotif = ''
         // Pour chaque devoir : on formate le message
         rows.forEach(function (row) {
@@ -232,8 +220,8 @@ module.exports = (wbot) => {
         const role = wbot.guilds.find(guild => guild.id === serveurId).roles.find(role => role.name === 'notif_devoirs')
         if (role) wbot.channels.find(channel => channel.name === channelName).send(role.toString())
         wbot.channels.find(channel => channel.name === channelName).send(embed)
-      }, millisTill10)
-    })
+      })
+    }, millisTill10)
   }
 
 
