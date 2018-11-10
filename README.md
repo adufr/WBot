@@ -1,6 +1,6 @@
 # WBot
 
-[![WBot's version](https://img.shields.io/badge/version-0.0.01-brightgreen.svg)](https://discord.gg/ff4f52s)
+[![WBot's version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](https://discord.gg/ff4f52s)
 ![GitHub issues](https://img.shields.io/github/issues-raw/woosy/WBot.svg)
 ![GitHub last commit](https://img.shields.io/github/last-commit/woosy/WBot.svg)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d51355f9284b4c7da809a167e36dbd87)](https://app.codacy.com/app/WBot/WBot?utm_source=github.com&utm_medium=referral&utm_content=Woosy/WBot&utm_campaign=Badge_Grade_Dashboard)
