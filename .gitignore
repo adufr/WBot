@@ -5,10 +5,9 @@
 # Stockage
 bwd/
 
-# Fichier token
-token.js
-# Fichier de config
-owners.json
+
+# Fichier de config (avec token etc)
+config.js
 
 ##########################
 # Règles générées
