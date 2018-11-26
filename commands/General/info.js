@@ -4,7 +4,6 @@ const {
 const {
     MessageEmbed
 } = require("discord.js");
-const Discord = require('discord.js');
 const moment = require('moment');
 require('moment-duration-format');
 const packageJson = require('../../package');
@@ -19,6 +18,8 @@ module.exports = class extends Command {
             aliases: ["informations", "information", "infos", "i", "bot", "src"],
             description: "Affiche des informations sur le bot",
         });
+        this.usageCustom = "%info";
+        this.example = "%info";
     }
 
     async run(message) {
@@ -52,7 +53,6 @@ module.exports = class extends Command {
 
         // Envoi
         message.channel.send(embed);
-
     }
 
 };
