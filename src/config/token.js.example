@@ -1,7 +1,0 @@
-module.exports = {
-  'bot_token': 'YOUR.BOT.TOKEN',
-  'db_host': 'YOUR.DATABASE.HOST',
-  'db_user': 'YOUR.DATABASE.USER',
-  'db_password': 'YOUR.DATABASE.PASSWORD',
-  'db_database': 'YOUR.DATABASE.NAME'
-}

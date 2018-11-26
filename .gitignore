@@ -1,7 +1,18 @@
+##########################
+# Règles ajoutées
+##########################
+
+# Stockage
+bwd/
+
 # Fichier token
 token.js
 # Fichier de config
 owners.json
+
+##########################
+# Règles générées
+##########################
 
 # Logs
 logs/

@@ -1,7 +1,0 @@
-{
-    "extends": "standard",
-    "rules": {
-        "no-multiple-empty-lines": 0,
-        "no-trailing-spaces": "off"
-    }
-}

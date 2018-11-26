@@ -1,8 +1,0 @@
-{
-  "owners": [{
-    "client_id": "YOUR.CLIENT.ID"
-  },
-  {
-    "client_id": "ANOTHER.CLIENT.ID"
-  }]
-}
