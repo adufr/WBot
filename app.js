@@ -2,10 +2,15 @@ const CalendarBotClient = require("./lib/CalendarBotClient");
 const config = require("./config")
 
 const client = new CalendarBotClient({
+    production: config.production,
+    language: config.language,
     prefix: config.prefix,
-    commandEditing: config.commandEditing,
     ownerID: config.ownerID,
     typing: config.typing,
+    noPrefixDM: false,
+    prefixCaseInsensitive: false,
+    commandEditing: config.commandEditing,
+    commandLogging: config.commandLogging,
     disabledEvents: [
         "GUILD_SYNC",
         "CHANNEL_PINS_UPDATE",
@@ -33,9 +38,7 @@ const client = new CalendarBotClient({
             name: config.activity_name,
             type: config.activity_type
         }
-    },
-    prefixCaseInsensitive: true,
-    noPrefixDM: true
+    }
 });
 
 client.login(config.token)
