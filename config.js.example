@@ -1,0 +1,36 @@
+const packageJson = require('./package.json')
+
+module.exports = {
+    // ========================
+    // =  /!\ IMPORTANT /!\
+    // ========================
+
+    // Production
+    "production": false,
+    // Token du bot (cf. https://discordapp.com/developers/applications/)
+    "token": "YOUR_DISCORD_TOKEN",
+    // Votre ID discord (vous permettra d'avoir tout les droits sur le bot)
+    "ownerID": "YOUR_USER_ID",
+    // Préfixe à utilier pour les commandes
+    "prefix": "%",
+    // Langage par défaut:
+    "language": "fr-FR",
+
+
+    // ========================
+    // = Misc.
+    // ========================
+
+    // Message d'activité
+    "activity_name": `%help - ${packageJson.version}`,
+    // Type du message d'activité (PLAYING/WATCHING)
+    "activity_type": "WATCHING",
+    // Le bot doit-il faire afficher le message "est entrain d'écrire"
+    "typing": false,
+    // Le bot doit-il lancer les commandes résultant de l'édition d'un message?
+    "commandEditing": true,
+    // Le boit doit-il afficher des logs lors de l'utilisation de commandes
+    "commandLogging": true,
+    // Doit-on utiliser les commandes dans la console (n'est pas supporté sur tout les OS)
+    "console_use_color": true,
+}
