@@ -17,10 +17,12 @@
   },
   "homepage": "https://github.com/Woosy/CalendarBot#readme",
   "dependencies": {
+    "chalk": "^2.4.1",
     "discord.js": "github:discordjs/discord.js",
     "klasa": "github:dirigeants/klasa",
     "klasa-member-gateway": "github:dirigeants/klasa-member-gateway",
     "moment": "^2.22.2",
-    "moment-duration-format": "^2.2.2"
+    "moment-duration-format": "^2.2.2",
+    "rotating-file-stream": "^1.3.9"
   }
 }
