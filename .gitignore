@@ -10,7 +10,7 @@ bwd/
 config.js
 
 # Fonctionnalités futures / non utilisées pour le moment
-.dev
+*.dev
 
 ##########################
 # Règles générées
