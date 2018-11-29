@@ -9,6 +9,9 @@ bwd/
 # Fichier de config (avec token etc)
 config.js
 
+# Fonctionnalités futures / non utilisées pour le moment
+.dev
+
 ##########################
 # Règles générées
 ##########################

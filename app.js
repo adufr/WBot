@@ -31,7 +31,11 @@ const client = new CalendarBotClient({
         }
     },
     console: {
-        useColor: config.console_use_color
+        useColor: config.console_use_color,
+        timestamps: "DD-MM-YYYY HH:mm:ss"
+    },
+    consoleEvents: {
+        verbose: true
     },
     presence: {
         activity: {
