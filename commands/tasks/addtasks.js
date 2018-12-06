@@ -11,8 +11,8 @@ const Discord = require('discord.js');
 module.exports = class extends Command {
 
 
-    constructor (...args) {
-        super (...args, {
+    constructor(...args) {
+        super(...args, {
             name: "addtask",
             cooldown: 5,
             permissionLevel: 0,
@@ -23,13 +23,15 @@ module.exports = class extends Command {
         });
         this.usageCustom = "%addtask <string:titre> <date:due_date> <string[]:description>";
         this.example = "%addtask Math 28/10/18 Faire l'exercice 69 de la page 420.";
-    }    
+    }
 
-    async run (message) {
-        const { tasks } = message.guild.settings.tasks;
-        const task = { title: "task", due_date: "date", description: "desc"};
-            
-        await message.guild.settings.update("tasks", task, message.guild);
+    async run(message) {
+        const task = {
+            title: "task",
+            due_date: "date",
+            description: "desc"
+        };
+        await message.guild.settings.update("tasklist.tasks", task);
         return message.reply("insertion effectuée");
     }
 
