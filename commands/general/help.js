@@ -56,7 +56,7 @@ module.exports = class extends Command {
         // Affichage de la liste des commandes
         const client = this.client;
         Promise.all([
-            loadCommands(this, client, path.join(__dirname, "../Tasks/")),
+            loadCommands(this, client, path.join(__dirname, "../tasks/")),
             loadCommands(this, client, __dirname),
         ]).then(function (responses) {
             const embed = new MessageEmbed()
