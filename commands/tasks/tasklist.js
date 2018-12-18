@@ -26,7 +26,7 @@ module.exports = class extends Command {
         if (!msg.guild) return msg.reply(`cette commande ne fonctionne pas en message privé pour le moment !`);
 
         // Si le serveur n'a aucune tâches
-        if (!msg.guild.settings.tasklist.tasks[0].title) return msg.reply(`Il n'y a aucune tâche à venir ...\nPour en ajouter, veuillez exécuter la commande \`%addtask\` ou vous référer à l'aide avec la commande \`%help addtask\`.`);
+        if (!msg.guild.settings.tasklist.tasks[0]) return msg.reply(`Il n'y a aucune tâche à venir...\nPour en ajouter, veuillez exécuter la commande \`%addtask\` ou vous référer à l'aide avec la commande \`%help addtask\`.`);
 
         // Embed avec la liste des tâches
         const embed = new MessageEmbed()
