@@ -48,7 +48,7 @@ module.exports = class extends Command {
         var datePassage;
         msg.guild.settings.tasklist.tasks.forEach(task => {
             // Date de la tâche
-            let date = moment(task.due_date).format('DD/MM/YY');
+            let date = moment(task.due_date, "DD/MM/YY");
             let weekday = moment(task.due_date).isoWeekday();
 
             // Rajouter la tâche au bon endroit dans l'embed
@@ -56,11 +56,11 @@ module.exports = class extends Command {
             // Sinon, création d'un nouveau field
             // (gère aussi la traduction pour "ajourd'hui" & "demain")
             if (datePassage && datePassage === date) {
-                embed.fields[embed.fields.length - 1].value += `\n**\`${this.client.funcs.beautify(task.title, 14)}\`** - ${task.description}`
+                embed.fields[embed.fields.length - 1].value += `\n**\`${this.client.funcs.beautify(task.title, 14)}\`** - ${task.description || "aucune description..."}`
             } else if (date === aujourdhui) {
-                embed.addField(`Aujourd'hui :`, `**\`${this.client.funcs.beautify(task.title, 14)}\`** - ${task.description}`)
+                embed.addField(`Aujourd'hui :`, `**\`${this.client.funcs.beautify(task.title, 14)}\`** - ${task.description || "aucune description..."}`)
             } else if (date === demain) {
-                embed.addField('Demain :', `**\`${this.client.funcs.beautify(task.title, 14)}\`** - ${task.description}`)
+                embed.addField('Demain :', `**\`${this.client.funcs.beautify(task.title, 14)}\`** - ${task.description || "aucune description..."}`)
             } else {
                 embed.addField(formatDate(date, weekday) + ' :', '**`' + this.client.funcs.beautify(task.title, 14) + '`** - ' + task.description)
             }
@@ -80,7 +80,7 @@ module.exports = class extends Command {
  * notre date formatée
  */
 function formatDate(date, weekday) {
-    let temp = date.split('/');
+    let temp = date.toString().split('/');
 
     var jour = '';
     switch (weekday) {
